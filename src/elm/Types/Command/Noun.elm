@@ -10,7 +10,12 @@ type Noun
 
 
 fromString : Maybe String -> Noun
-fromString noun =
+fromString value =
+    let
+        noun =
+            value
+                |> Maybe.map (\value_ -> String.toLower value_)
+    in
     case noun of
         Just "door" ->
             Door
