@@ -1,0 +1,22 @@
+$basic-color1: #000;
+$basic-color2: #0f0;
+
+$main-bg-color: $basic-color1;
+$main-font-color: #fff;
+$footer-bg-color: $basic-color1;
+$footer-font-color: $main-font-color;
+$footer-height: 64px;
+$header-height: 64px;
+$header-bg-color: $basic-color1;
+$header-font-color: $main-font-color;
+$game-frame-color: $basic-color2;
+$game-frame-width: 80%;
+$game-window-width: 640px;
+$game-window-height: 480px;
+$item-list-width: 200px;
+
+$spacing: 4px;
+
+@function spacing($value) {
+  @return $value * $spacing;
+}

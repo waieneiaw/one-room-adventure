@@ -1,0 +1,23 @@
+{
+  "[elm]": {
+    "editor.formatOnSave": true
+  },
+  "elmLS.elmAnalyseTrigger": "save",
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "editor.tabCompletion": "on",
+    "editor.snippetSuggestions": "top"
+  },
+  "css.validate": true,
+  "eslint.enable": true,
+  "eslint.packageManager": "yarn",
+  "stylelint.configOverrides": {
+    "ignoreFiles": ["node_modules/**/*.*", "functions/**/*.*"]
+  },
+  "stylelint.enable": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
