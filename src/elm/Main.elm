@@ -32,62 +32,50 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        TitleMsg gMsg ->
-            case model of
-                Title sceneModel ->
-                    let
-                        ( newModel, cmd ) =
-                            Scenes.Title.update gMsg sceneModel
-                    in
-                    if newModel.proceeded then
-                        let
-                            ( initModel, initCmd ) =
-                                Scenes.Game.init
-                        in
-                        ( Game initModel, Cmd.map GameMsg initCmd )
+    case ( msg, model ) of
+        ( TitleMsg sceneMsg, Title sceneModel ) ->
+            let
+                ( newModel, cmd ) =
+                    Scenes.Title.update sceneMsg sceneModel
+            in
+            if newModel.proceeded then
+                let
+                    ( initModel, initCmd ) =
+                        Scenes.Game.init
+                in
+                ( Game initModel, Cmd.map GameMsg initCmd )
 
-                    else
-                        ( Title newModel, Cmd.map TitleMsg cmd )
+            else
+                ( Title newModel, Cmd.map TitleMsg cmd )
 
-                _ ->
-                    ( model, Cmd.none )
+        ( GameMsg sceneMsg, Game sceneModel ) ->
+            let
+                ( newModel, cmd ) =
+                    Scenes.Game.update sceneMsg sceneModel
+            in
+            if newModel.isCleared then
+                let
+                    ( initModel, initCmd ) =
+                        Scenes.Ending.init
+                in
+                ( Ending initModel, Cmd.map EndingMsg initCmd )
 
-        GameMsg gMsg ->
-            case model of
-                Game sceneModel ->
-                    let
-                        ( newModel, cmd ) =
-                            Scenes.Game.update gMsg sceneModel
-                    in
-                    if newModel.isCleared then
-                        let
-                            ( initModel, initCmd ) =
-                                Scenes.Ending.init
-                        in
-                        ( Ending initModel, Cmd.map EndingMsg initCmd )
+            else
+                ( Game newModel, Cmd.map GameMsg cmd )
 
-                    else
-                        ( Game newModel, Cmd.map GameMsg cmd )
+        ( EndingMsg sceneMsg, Ending sceneModel ) ->
+            let
+                ( newModel, cmd ) =
+                    Scenes.Ending.update sceneMsg sceneModel
+            in
+            if newModel.proceeded then
+                ( Title Scenes.Title.init, Cmd.map TitleMsg Cmd.none )
 
-                _ ->
-                    ( model, Cmd.none )
+            else
+                ( Ending newModel, Cmd.map EndingMsg cmd )
 
-        EndingMsg gMsg ->
-            case model of
-                Ending sceneModel ->
-                    let
-                        ( newModel, cmd ) =
-                            Scenes.Ending.update gMsg sceneModel
-                    in
-                    if newModel.proceeded then
-                        ( Title Scenes.Title.init, Cmd.map TitleMsg Cmd.none )
-
-                    else
-                        ( Ending newModel, Cmd.map EndingMsg cmd )
-
-                _ ->
-                    ( model, Cmd.none )
+        _ ->
+            ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

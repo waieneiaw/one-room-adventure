@@ -203,25 +203,20 @@ execCommandWithoutPlace :
     Model
     -> Types.Command.Command
     -> Maybe ( Place, Types.Command.Result )
-execCommandWithoutPlace model command =
+execCommandWithoutPlace model { verb, noun } =
     let
         paper =
             getItem model.items Types.Item.Paper
     in
-    case command.verb of
-        Types.Command.Verb.Use ->
-            case command.noun of
-                Types.Command.Noun.Paper ->
-                    case paper of
-                        Just _ ->
-                            Just
-                                ( model.place
-                                , Types.Command.resultWithoutItem
-                                    "紙には何も書かれていません。"
-                                )
-
-                        _ ->
-                            Nothing
+    case ( verb, noun ) of
+        ( Types.Command.Verb.Use, Types.Command.Noun.Paper ) ->
+            case paper of
+                Just _ ->
+                    Just
+                        ( model.place
+                        , Types.Command.resultWithoutItem
+                            "紙には何も書かれていません。"
+                        )
 
                 _ ->
                     Nothing

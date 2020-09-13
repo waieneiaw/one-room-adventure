@@ -35,17 +35,12 @@ noResults model =
 
 update : Model -> Types.Command.Command -> ( Model, Types.Command.Result )
 update model { verb, noun } =
-    case verb of
-        Types.Command.Verb.Look ->
-            case noun of
-                Types.Command.Noun.None ->
-                    ( model
-                    , Types.Command.resultWithoutItem
-                        "東を向いているようです。何もありません。"
-                    )
-
-                _ ->
-                    noResults model
+    case ( verb, noun ) of
+        ( Types.Command.Verb.Look, Types.Command.Noun.None ) ->
+            ( model
+            , Types.Command.resultWithoutItem
+                "東を向いているようです。何もありません。"
+            )
 
         _ ->
             noResults model
