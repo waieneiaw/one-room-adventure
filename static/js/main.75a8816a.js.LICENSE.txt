@@ -1,0 +1,27 @@
+/*! @/assets/css/main.scss */
+
+/*! @/elm/Main.elm */
+
+/*! ModuleConcatenation bailout: Module is an entry point */
+
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+
+/*! all exports used */
+
+/*! exports used: Elm */
+
+/*! no exports provided */
+
+/*! no static exports found */
+
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+
+/*!**************************!*\
+  !*** ./src/elm/Main.elm ***!
+  \**************************/
+
+/*!**********************************!*\
+  !*** ./src/assets/css/main.scss ***!
+  \**********************************/
