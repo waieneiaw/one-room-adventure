@@ -1,7 +1,11 @@
-module Types.Door exposing (Door)
+module Types.Door exposing (Door(..))
 
 
-type alias Door =
+type alias State =
     { opened : Bool
-    , locked : Bool
     }
+
+
+type Door
+    = Locked
+    | Unlocked State

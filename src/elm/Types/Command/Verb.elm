@@ -10,6 +10,7 @@ type Verb
     | Throw -- 捨てる
     | Look -- 見る
     | Use -- 使う
+    | Read -- 読む
 
 
 fromString : Maybe String -> Verb
@@ -30,6 +31,12 @@ fromString value =
 
         "take" ->
             Take
+
+        "get" ->
+            Take
+
+        "read" ->
+            Read
 
         "put" ->
             Put

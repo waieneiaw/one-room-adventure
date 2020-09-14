@@ -179,6 +179,14 @@ body {
   padding-left: spacing(4);
 }
 
+.ml_game_itemList_inner li {
+  margin-bottom: spacing(8);
+}
+
+.ml_game_itemList_inner li:last-child {
+  margin-bottom: 0;
+}
+
 .ml_game_news {
   align-items: center;
   background-color: $main-bg-color;

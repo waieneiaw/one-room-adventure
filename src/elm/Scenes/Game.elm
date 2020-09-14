@@ -13,6 +13,7 @@ import Types.Command
 import Types.Command.Noun
 import Types.Command.Verb
 import Types.Direction
+import Types.Door
 import Types.Item
 import Utils.Keyboard
 
@@ -25,15 +26,11 @@ type Place
     = Room Places.Room.Model
 
 
-type alias Items =
-    List Types.Item.Item
-
-
 type alias Model =
     { command : String
     , message : String
     , place : Place
-    , items : Items
+    , items : Types.Item.Items
     , direction : Types.Direction.Direction
     , isCleared : Bool
     }
@@ -128,6 +125,7 @@ update msg model =
                     ( { model
                         | direction = move model TurnLeft
                         , command = ""
+                        , message = "左を向きました。"
                       }
                     , Cmd.none
                     )
@@ -137,6 +135,7 @@ update msg model =
                     ( { model
                         | direction = move model TurnRight
                         , command = ""
+                        , message = "右を向きました。"
                       }
                     , Cmd.none
                     )
@@ -146,10 +145,18 @@ update msg model =
                     case model.place of
                         Room placeModel ->
                             let
+                                door =
+                                    placeModel.north.door
+
                                 condition =
-                                    placeModel.north.door.opened
-                                        && model.direction
-                                        == Types.Direction.North
+                                    case door of
+                                        Types.Door.Unlocked state ->
+                                            state.opened
+                                                && model.direction
+                                                == Types.Direction.North
+
+                                        _ ->
+                                            False
                             in
                             if condition then
                                 ( { model
@@ -176,25 +183,14 @@ execCommandWithPlace model command =
         Room placeModel ->
             let
                 ( newModel, result ) =
-                    Places.Room.update model.direction placeModel command
+                    Places.Room.update
+                        { direction = model.direction
+                        , model = placeModel
+                        , command = command
+                        , items = model.items
+                        }
             in
             ( Room newModel, result )
-
-
-{-| 指定したtype\_のアイテムを持っている場合、そのアイテムを返す。
--}
-getItem : List Types.Item.Item -> Types.Item.ItemType -> Maybe Types.Item.Item
-getItem list type_ =
-    case list of
-        [] ->
-            Nothing
-
-        item :: items ->
-            if item.type_ == type_ then
-                Just item
-
-            else
-                getItem items type_
 
 
 {-| Place問わずどこでも実行できるコマンドの実行処理。
@@ -206,7 +202,7 @@ execCommandWithoutPlace :
 execCommandWithoutPlace model { verb, noun } =
     let
         paper =
-            getItem model.items Types.Item.Paper
+            Types.Item.getItem model.items Types.Item.Paper
     in
     case ( verb, noun ) of
         ( Types.Command.Verb.Use, Types.Command.Noun.Paper ) ->
