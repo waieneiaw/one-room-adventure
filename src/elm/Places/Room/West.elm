@@ -5,6 +5,7 @@ import Svg exposing (Svg)
 import Types.Command
 import Types.Command.Noun
 import Types.Command.Verb
+import Types.Payload
 
 
 type alias Model =
@@ -21,13 +22,15 @@ noResults model =
     ( model, Types.Command.noResults )
 
 
-update : Model -> Types.Command.Command -> ( Model, Types.Command.Result )
-update model { verb, noun } =
-    case ( verb, noun ) of
+update :
+    Types.Payload.UpdateDirectionPayload Model
+    -> ( Model, Types.Command.Result )
+update { model, command } =
+    case ( command.verb, command.noun ) of
         ( Types.Command.Verb.Look, Types.Command.Noun.None ) ->
             ( model
             , Types.Command.resultWithoutItem
-                "西を向いているようです。何もありません。"
+                "西を向いています。何もありません。"
             )
 
         _ ->

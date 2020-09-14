@@ -10,6 +10,7 @@ import Types.Command.Verb
 import Types.Door
 import Types.Item
 import Types.Object
+import Types.Payload
 
 
 type alias Model =
@@ -22,7 +23,7 @@ init : Model
 init =
     let
         door =
-            { opened = False, locked = False }
+            Types.Door.Locked
 
         paper =
             Types.Object.Exist
@@ -41,20 +42,30 @@ noResults model =
     ( model, Types.Command.noResults )
 
 
-update : Model -> Types.Command.Command -> ( Model, Types.Command.Result )
-update model { verb, noun } =
-    case ( verb, noun ) of
+update :
+    Types.Payload.UpdateDirectionPayload Model
+    -> ( Model, Types.Command.Result )
+update { items, model, command } =
+    case ( command.verb, command.noun ) of
         ( Types.Command.Verb.Open, Types.Command.Noun.Door ) ->
-            ( { model
-                | door = { opened = True, locked = False }
-              }
-            , Types.Command.resultWithoutItem
-                "ドアを開けました。"
-            )
+            case model.door of
+                Types.Door.Locked ->
+                    ( model
+                    , Types.Command.resultWithoutItem
+                        "鍵がかかっているようです。"
+                    )
+
+                Types.Door.Unlocked _ ->
+                    ( { model
+                        | door = Types.Door.Unlocked { opened = True }
+                      }
+                    , Types.Command.resultWithoutItem
+                        "ドアを開けました。"
+                    )
 
         ( Types.Command.Verb.Close, Types.Command.Noun.Door ) ->
             ( { model
-                | door = { opened = False, locked = False }
+                | door = Types.Door.Unlocked { opened = False }
               }
             , Types.Command.resultWithoutItem
                 "ドアを閉めました。"
@@ -114,6 +125,27 @@ update model { verb, noun } =
                 _ ->
                     noResults model
 
+        ( Types.Command.Verb.Use, Types.Command.Noun.Key ) ->
+            let
+                key =
+                    Types.Item.getItem items Types.Item.Key
+            in
+            case model.door of
+                Types.Door.Locked ->
+                    case key of
+                        Just _ ->
+                            ( { model
+                                | door = Types.Door.Unlocked { opened = False }
+                              }
+                            , Types.Command.resultWithoutItem "鍵が開きました。"
+                            )
+
+                        _ ->
+                            noResults model
+
+                _ ->
+                    noResults model
+
         _ ->
             noResults model
 
@@ -121,6 +153,6 @@ update model { verb, noun } =
 view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
-    , Images.Door.view model.door.opened { x = 360, y = 196 }
+    , Images.Door.view model.door { x = 360, y = 196 }
     , Images.Paper.view model.paper { x = 100, y = 200 }
     ]

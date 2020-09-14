@@ -9,6 +9,7 @@ import Components.Footer
 import Html exposing (Html)
 import Html.Attributes
 import Images.Door
+import Images.Key
 import Images.Paper
 import Images.Wall
 import Svg
@@ -38,6 +39,7 @@ view toMsg content =
             [ Images.Wall.defs
             , Images.Door.defs
             , Images.Paper.defs
+            , Images.Key.defs
             ]
         ]
     }

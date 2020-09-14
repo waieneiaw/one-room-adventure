@@ -7,6 +7,7 @@ type Noun
     | Door
     | Paper
     | Desk
+    | Key
 
 
 fromString : Maybe String -> Noun
@@ -25,6 +26,9 @@ fromString value =
 
         Just "desk" ->
             Desk
+
+        Just "key" ->
+            Key
 
         Nothing ->
             None

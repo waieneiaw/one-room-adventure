@@ -3,12 +3,21 @@ module Images.Door exposing (defs, view)
 import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
+import Types.Door
 import Types.Point
 
 
-view : Bool -> Types.Point.Point -> Svg msg
-view opened { x, y } =
+view : Types.Door.Door -> Types.Point.Point -> Svg msg
+view door { x, y } =
     let
+        opened =
+            case door of
+                Types.Door.Locked ->
+                    False
+
+                Types.Door.Unlocked state ->
+                    state.opened
+
         xStr =
             String.fromInt x
 
@@ -59,7 +68,6 @@ defOpenedDoor =
     Svg.svg
         [ Svg.Attributes.version "1.1"
         , Svg.Attributes.width "300"
-        , Svg.Attributes.height "300"
         , Svg.Attributes.height "300"
         , Svg.Attributes.viewBox "0 0 300 300"
         ]
