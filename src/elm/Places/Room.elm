@@ -41,7 +41,7 @@ init =
 
 
 update :
-    Types.Argument.UpdatePlace Model
+    Types.Argument.UpdatePlaceArgs Model
     -> ( Model, Types.Command.Result )
 update { items, direction, model, command } =
     case direction of
