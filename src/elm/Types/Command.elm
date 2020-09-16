@@ -1,4 +1,11 @@
-module Types.Command exposing (Command, Result, noResults, parse, resultWithItem, resultWithoutItem)
+module Types.Command exposing
+    ( Command
+    , Result
+    , noResults
+    , parse
+    , resultWithItem
+    , resultWithoutItem
+    )
 
 import List.Extra as List
 import Regex
@@ -74,9 +81,9 @@ resultWithoutItem text =
 
 {-| コマンド実行の結果、messageとitemを返す場合。
 -}
-resultWithItem : String -> Types.Item.Item -> Result
-resultWithItem text item =
-    { message = text
+resultWithItem : Types.Item.Item -> Result
+resultWithItem item =
+    { message = "OK!"
     , item =
         Just
             { type_ = item.type_

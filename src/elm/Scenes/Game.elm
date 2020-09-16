@@ -1,4 +1,10 @@
-module Scenes.Game exposing (Model(..), Msg, init, update, view)
+module Scenes.Game exposing
+    ( Model(..)
+    , Msg
+    , init
+    , update
+    , view
+    )
 
 import Browser.Dom
 import Constants.Basic

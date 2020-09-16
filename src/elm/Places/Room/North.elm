@@ -118,8 +118,7 @@ update { items, model, command } =
                     ( { model
                         | paper = Types.Object.NotExist
                       }
-                    , Types.Command.resultWithItem "紙を取りました。"
-                        item
+                    , Types.Command.resultWithItem item
                     )
 
                 _ ->

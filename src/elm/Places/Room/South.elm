@@ -68,9 +68,7 @@ update { model, command } =
             case model.key of
                 Types.Object.Exist item ->
                     ( { model | key = Types.Object.NotExist }
-                    , Types.Command.resultWithItem
-                        "鍵を取りました。"
-                        item
+                    , Types.Command.resultWithItem item
                     )
 
                 _ ->

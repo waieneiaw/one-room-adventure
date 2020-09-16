@@ -1,4 +1,11 @@
-module Scenes.Ending exposing (Model(..), Msg, init, subscriptions, update, view)
+module Scenes.Ending exposing
+    ( Model(..)
+    , Msg
+    , init
+    , subscriptions
+    , update
+    , view
+    )
 
 import Browser.Events
 import Html exposing (Html)
