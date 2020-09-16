@@ -27,7 +27,7 @@ body {
   height: 100%;
 }
 
-.ly_appbar {
+.ly_header {
   background-color: $header-bg-color;
   color: $header-font-color;
   height: $header-height;
@@ -52,18 +52,23 @@ body {
 .ly_main {
   color: inherit;
   height: 100%;
+  min-height: 740px;
   padding-bottom: $header-height;
   padding-top: $header-height;
   width: 100%;
 }
 
 .ly_mainContent {
+  align-items: center;
+  display: flex;
   height: 100%;
+  justify-content: center;
   width: 100%;
 }
 
 .ly_mainContent_inner {
   height: 100%;
+  max-height: 840px;
 }
 
 .ml_panel {

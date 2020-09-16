@@ -4,8 +4,6 @@ module Components.Template exposing
     )
 
 import Browser
-import Components.AppBar
-import Components.Footer
 import Html exposing (Html)
 import Html.Attributes
 import Images.Door
@@ -31,9 +29,9 @@ view toMsg content =
     { title = title
     , body =
         [ Html.div [ Html.Attributes.class "ly_wrapper" ]
-            [ Components.AppBar.view title
+            [ viewHeader
             , viewMain (Html.map toMsg <| content)
-            , Components.Footer.view
+            , viewFooter
             ]
         , Svg.defs []
             [ Images.Wall.defs
@@ -45,6 +43,16 @@ view toMsg content =
     }
 
 
+viewHeader : Html msg
+viewHeader =
+    Html.header [ Html.Attributes.class "ly_header" ]
+        [ Html.nav [ Html.Attributes.class "ml_header_nav" ]
+            [ Html.h1 [ Html.Attributes.class "ml_header_title" ]
+                [ Html.text title ]
+            ]
+        ]
+
+
 viewMain : Html msg -> Html msg
 viewMain content =
     Html.main_ [ Html.Attributes.class "ly_main" ]
@@ -52,5 +60,14 @@ viewMain content =
             [ Html.div [ Html.Attributes.class "ly_mainContent_inner" ]
                 [ content
                 ]
+            ]
+        ]
+
+
+viewFooter : Html msg
+viewFooter =
+    Html.footer [ Html.Attributes.class "ly_footer" ]
+        [ Html.div [ Html.Attributes.class "ml_footer_copyright" ]
+            [ Html.span [] [ Html.text "© 2020 waien" ]
             ]
         ]
