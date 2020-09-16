@@ -5,9 +5,9 @@ import Places.Room.North
 import Places.Room.South
 import Places.Room.West
 import Svg exposing (Svg)
+import Types.Argument
 import Types.Command
 import Types.Direction exposing (Direction)
-import Types.Payload
 
 
 type alias Model =
@@ -41,7 +41,7 @@ init =
 
 
 update :
-    Types.Payload.UpdatePlacePayload Model
+    Types.Argument.UpdatePlace Model
     -> ( Model, Types.Command.Result )
 update { items, direction, model, command } =
     case direction of

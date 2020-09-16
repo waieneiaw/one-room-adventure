@@ -1,11 +1,11 @@
-module Types.Payload exposing (..)
+module Types.Argument exposing (..)
 
 import Types.Command
 import Types.Direction
 import Types.Item
 
 
-type alias UpdatePlacePayload model =
+type alias UpdatePlaceArgs model =
     { direction : Types.Direction.Direction
     , items : Types.Item.Items
     , model : model
@@ -13,7 +13,7 @@ type alias UpdatePlacePayload model =
     }
 
 
-type alias UpdateDirectionPayload model =
+type alias UpdateDirectionArgs model =
     { items : Types.Item.Items
     , model : model
     , command : Types.Command.Command

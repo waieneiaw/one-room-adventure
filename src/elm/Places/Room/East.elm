@@ -2,12 +2,12 @@ module Places.Room.East exposing (Model, init, update, view)
 
 import Images.Wall
 import Svg exposing (Svg)
+import Types.Argument
 import Types.Command
 import Types.Command.Noun
 import Types.Command.Verb
 import Types.Item
 import Types.Object
-import Types.Payload
 
 
 type alias Model =
@@ -34,7 +34,9 @@ noResults model =
     ( model, Types.Command.noResults )
 
 
-update : Types.Payload.UpdateDirectionPayload Model -> ( Model, Types.Command.Result )
+update :
+    Types.Argument.UpdateDirectionArgs Model
+    -> ( Model, Types.Command.Result )
 update { model, command } =
     case ( command.verb, command.noun ) of
         ( Types.Command.Verb.Look, Types.Command.Noun.None ) ->
