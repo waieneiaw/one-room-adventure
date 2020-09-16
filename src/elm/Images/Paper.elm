@@ -20,6 +20,8 @@ view obj { x, y } =
                 [ Svg.Attributes.xlinkHref ("#" ++ id)
                 , Svg.Attributes.x (String.fromInt x)
                 , Svg.Attributes.y (String.fromInt y)
+                , Svg.Attributes.fill Constants.Color.backgroundColor
+                , Svg.Attributes.stroke Constants.Color.mainColor
                 ]
                 []
 
@@ -49,8 +51,6 @@ defImpl =
             , Svg.Attributes.y "0"
             , Svg.Attributes.width "50"
             , Svg.Attributes.height "70"
-            , Svg.Attributes.fill Constants.Color.backgroundColor
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         ]

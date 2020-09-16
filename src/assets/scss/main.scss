@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 @import url('lib/reset.min.css');
 @import 'variables.scss';
 
@@ -18,8 +17,8 @@ html {
 body {
   background-color: $main-bg-color;
   color: $main-font-color;
-  font-family: 'Lato', 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande',
-    'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif;
   font-size: 1.6rem;
   height: 100%;
 }
@@ -28,7 +27,7 @@ body {
   height: 100%;
 }
 
-.ly_appbar {
+.ly_header {
   background-color: $header-bg-color;
   color: $header-font-color;
   height: $header-height;
@@ -53,18 +52,23 @@ body {
 .ly_main {
   color: inherit;
   height: 100%;
+  min-height: 740px;
   padding-bottom: $header-height;
   padding-top: $header-height;
   width: 100%;
 }
 
 .ly_mainContent {
+  align-items: center;
+  display: flex;
   height: 100%;
+  justify-content: center;
   width: 100%;
 }
 
 .ly_mainContent_inner {
   height: 100%;
+  max-height: 840px;
 }
 
 .ml_panel {
@@ -93,10 +97,10 @@ body {
   padding: spacing(4);
   text-align: center;
   width: $game-window-width;
-}
 
-.ml_panel_message span {
-  animation: Blink 3s infinite;
+  span {
+    animation: Blink 3s infinite;
+  }
 }
 
 @keyframes Blink {
@@ -144,19 +148,15 @@ body {
 .ml_game_input {
   // height: 80px;
   width: 100%;
-}
 
-.ml_game_input input[type='input'] {
-  background-color: $main-bg-color;
-  border: 1px solid $game-frame-color;
-  color: #fff;
-  padding: spacing(2) spacing(4);
-  width: 100%;
+  input[type='input'] {
+    background-color: $main-bg-color;
+    border: 1px solid $game-frame-color;
+    color: #fff;
+    padding: spacing(2) spacing(4);
+    width: 100%;
+  }
 }
-
-// .ml_game_input input[type='input']:focus {
-//   border: 2px solid $game-frame-color;
-// }
 
 .ml_game_itemList {
   border: 1px solid $game-frame-color;
@@ -171,20 +171,20 @@ body {
   height: 100%;
   overflow: auto;
   width: 100%;
-}
 
-.ml_game_itemList_inner ul {
-  list-style-type: square;
-  margin-top: spacing(8);
-  padding-left: spacing(4);
-}
+  ul {
+    list-style-type: square;
+    margin-top: spacing(8);
+    padding-left: spacing(4);
 
-.ml_game_itemList_inner li {
-  margin-bottom: spacing(8);
-}
+    li {
+      margin-bottom: spacing(8);
 
-.ml_game_itemList_inner li:last-child {
-  margin-bottom: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 .ml_game_news {

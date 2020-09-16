@@ -1,4 +1,4 @@
-module Scenes.Ending exposing (Model, Msg, init, subscriptions, update, view)
+module Scenes.Ending exposing (Model(..), Msg, init, subscriptions, update, view)
 
 import Browser.Events
 import Html exposing (Html)
@@ -13,22 +13,15 @@ import Utils.Keyboard exposing (onKeyDown)
 -- MODEL
 
 
-type alias Model =
-    { proceeded : Bool
-    , waiting : Bool
-    }
+type Model
+    = Idling
+    | Running
+    | Finished
 
 
 init : ( Model, Cmd Msg )
 init =
-    let
-        proceeded =
-            False
-
-        waiting =
-            True
-    in
-    ( Model proceeded waiting, Task.perform Waiting wait )
+    ( Idling, Task.perform Waiting wait )
 
 
 
@@ -48,20 +41,25 @@ wait =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let
+        noop =
+            ( model, Cmd.none )
+    in
     case msg of
         KeyDown ->
-            if model.waiting then
-                ( model, Cmd.none )
+            case model of
+                Idling ->
+                    noop
 
-            else
-                ( { model | proceeded = True }, Cmd.none )
+                _ ->
+                    ( Finished, Cmd.none )
 
         Waiting finished ->
             if finished then
-                ( { model | waiting = False }, Cmd.none )
+                ( Running, Cmd.none )
 
             else
-                ( model, Cmd.none )
+                noop
 
 
 
@@ -82,7 +80,7 @@ view model =
             [ Html.Attributes.class "ml_panel_message"
             ]
             [ Html.span []
-                [ if model.waiting then
+                [ if model == Idling then
                     Html.text ""
 
                   else

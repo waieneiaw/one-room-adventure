@@ -1,6 +1,6 @@
 module Types.Command exposing (Command, Result, noResults, parse, resultWithItem, resultWithoutItem)
 
-import List.Extra
+import List.Extra as List
 import Regex
 import Types.Command.Noun
 import Types.Command.Verb
@@ -38,7 +38,7 @@ parse rawCommand =
 
         nounStr =
             if List.length splittedCommand == 2 then
-                List.Extra.last splittedCommand
+                List.last splittedCommand
 
             else
                 -- コマンドが動詞のみの場合

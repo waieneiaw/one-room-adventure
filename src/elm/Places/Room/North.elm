@@ -4,13 +4,13 @@ import Images.Door
 import Images.Paper
 import Images.Wall
 import Svg exposing (Svg)
+import Types.Argument
 import Types.Command
 import Types.Command.Noun
 import Types.Command.Verb
 import Types.Door
 import Types.Item
 import Types.Object
-import Types.Payload
 
 
 type alias Model =
@@ -43,7 +43,7 @@ noResults model =
 
 
 update :
-    Types.Payload.UpdateDirectionPayload Model
+    Types.Argument.UpdateDirectionArgs Model
     -> ( Model, Types.Command.Result )
 update { items, model, command } =
     case ( command.verb, command.noun ) of

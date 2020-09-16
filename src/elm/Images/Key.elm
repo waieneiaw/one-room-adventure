@@ -20,6 +20,8 @@ view obj { x, y } =
                 [ Svg.Attributes.xlinkHref ("#" ++ id)
                 , Svg.Attributes.x (String.fromInt x)
                 , Svg.Attributes.y (String.fromInt y)
+                , Svg.Attributes.fill Constants.Color.backgroundColor
+                , Svg.Attributes.stroke Constants.Color.mainColor
                 ]
                 []
 
@@ -49,8 +51,6 @@ defImpl =
             , Svg.Attributes.y "0"
             , Svg.Attributes.width "20"
             , Svg.Attributes.height "10"
-            , Svg.Attributes.fill Constants.Color.backgroundColor
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.rect
@@ -58,15 +58,11 @@ defImpl =
             , Svg.Attributes.y "4"
             , Svg.Attributes.width "8"
             , Svg.Attributes.height "2"
-            , Svg.Attributes.fill Constants.Color.backgroundColor
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.polygon
             [ Svg.Attributes.points
                 "10,10 10,26 14,32 18,26 18,10"
-            , Svg.Attributes.fill Constants.Color.backgroundColor
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.line
@@ -74,8 +70,6 @@ defImpl =
             , Svg.Attributes.y1 "14"
             , Svg.Attributes.x2 "14"
             , Svg.Attributes.y2 "30"
-            , Svg.Attributes.fill Constants.Color.backgroundColor
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         ]

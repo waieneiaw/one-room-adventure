@@ -1,4 +1,4 @@
-import '@/assets/css/main.scss';
+import '@/assets/scss/main.scss';
 
 import { Elm } from '@/elm/Main.elm';
 

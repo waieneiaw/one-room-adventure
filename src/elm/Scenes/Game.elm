@@ -1,4 +1,4 @@
-module Scenes.Game exposing (Model, Msg, init, update, view)
+module Scenes.Game exposing (Model(..), Msg, init, update, view)
 
 import Browser.Dom
 import Constants.Basic
@@ -26,14 +26,18 @@ type Place
     = Room Places.Room.Model
 
 
-type alias Model =
+type alias State =
     { command : String
     , message : String
     , place : Place
     , items : Types.Item.Items
     , direction : Types.Direction.Direction
-    , isCleared : Bool
     }
+
+
+type Model
+    = Playing State
+    | Finished
 
 
 init : ( Model, Cmd Msg )
@@ -53,11 +57,16 @@ init =
 
         direction =
             Types.Direction.North
-
-        isCleared =
-            False
     in
-    ( Model command message place items direction isCleared, focusCommandBox )
+    ( Playing
+        { command = command
+        , message = message
+        , place = place
+        , items = items
+        , direction = direction
+        }
+    , focusCommandBox
+    )
 
 
 
@@ -85,88 +94,101 @@ existsItem maybeItem =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let
+        noop =
+            ( model, Cmd.none )
+    in
     case msg of
         NoOp ->
-            ( model, Cmd.none )
+            noop
 
         Input value ->
-            ( { model | command = value }, Cmd.none )
+            case model of
+                Playing state ->
+                    ( Playing { state | command = value }, Cmd.none )
+
+                _ ->
+                    noop
 
         KeyDown code ->
-            case code of
-                -- Enter
-                13 ->
-                    let
-                        ( place, result ) =
-                            execCommand model model.command
-                    in
-                    let
-                        ( exists, item ) =
-                            existsItem result.item
-                    in
-                    ( { model
-                        | place = place
-                        , command = ""
-                        , message = result.message
-                        , items =
-                            if exists == False then
-                                model.items
-
-                            else
-                                item
-                                    :: []
-                                    |> List.append model.items
-                      }
-                    , Cmd.none
-                    )
-
-                -- <-
-                37 ->
-                    ( { model
-                        | direction = move model TurnLeft
-                        , command = ""
-                        , message = "左を向きました。"
-                      }
-                    , Cmd.none
-                    )
-
-                -- ->
-                39 ->
-                    ( { model
-                        | direction = move model TurnRight
-                        , command = ""
-                        , message = "右を向きました。"
-                      }
-                    , Cmd.none
-                    )
-
-                -- ↑
-                38 ->
-                    case model.place of
-                        Room placeModel ->
+            case model of
+                Playing state ->
+                    case code of
+                        -- Enter
+                        13 ->
                             let
-                                door =
-                                    placeModel.north.door
-
-                                condition =
-                                    case door of
-                                        Types.Door.Unlocked state ->
-                                            state.opened
-                                                && model.direction
-                                                == Types.Direction.North
-
-                                        _ ->
-                                            False
+                                ( place, result ) =
+                                    execCommand state state.command
                             in
-                            if condition then
-                                ( { model
-                                    | isCleared = True
-                                  }
-                                , Cmd.none
-                                )
+                            let
+                                ( exists, item ) =
+                                    existsItem result.item
+                            in
+                            ( Playing
+                                { state
+                                    | place = place
+                                    , command = ""
+                                    , message = result.message
+                                    , items =
+                                        if exists == False then
+                                            state.items
 
-                            else
-                                ( model, Cmd.none )
+                                        else
+                                            item
+                                                :: []
+                                                |> List.append state.items
+                                }
+                            , Cmd.none
+                            )
+
+                        -- <-
+                        37 ->
+                            ( Playing
+                                { state
+                                    | direction = move state TurnLeft
+                                    , command = ""
+                                    , message = "左を向きました。"
+                                }
+                            , Cmd.none
+                            )
+
+                        -- ->
+                        39 ->
+                            ( Playing
+                                { state
+                                    | direction = move state TurnRight
+                                    , command = ""
+                                    , message = "右を向きました。"
+                                }
+                            , Cmd.none
+                            )
+
+                        -- ↑
+                        38 ->
+                            case state.place of
+                                Room placeModel ->
+                                    let
+                                        door =
+                                            placeModel.north.door
+
+                                        condition =
+                                            case door of
+                                                Types.Door.Unlocked doorState ->
+                                                    doorState.opened
+                                                        && state.direction
+                                                        == Types.Direction.North
+
+                                                _ ->
+                                                    False
+                                    in
+                                    if condition then
+                                        ( Finished, Cmd.none )
+
+                                    else
+                                        noop
+
+                        _ ->
+                            noop
 
                 _ ->
                     ( model, Cmd.none )
@@ -175,7 +197,7 @@ update msg model =
 {-| Place別のコマンドの実行処理。
 -}
 execCommandWithPlace :
-    Model
+    State
     -> Types.Command.Command
     -> ( Place, Types.Command.Result )
 execCommandWithPlace model command =
@@ -196,7 +218,7 @@ execCommandWithPlace model command =
 {-| Place問わずどこでも実行できるコマンドの実行処理。
 -}
 execCommandWithoutPlace :
-    Model
+    State
     -> Types.Command.Command
     -> Maybe ( Place, Types.Command.Result )
 execCommandWithoutPlace model { verb, noun } =
@@ -224,7 +246,7 @@ execCommandWithoutPlace model { verb, noun } =
 {-| 入力されたコマンドを実行する。
 -}
 execCommand :
-    Model
+    State
     -> String
     -> ( Place, Types.Command.Result )
 execCommand model rawCommand =
@@ -243,7 +265,7 @@ type Moving
     | TurnRight
 
 
-move : Model -> Moving -> Types.Direction.Direction
+move : State -> Moving -> Types.Direction.Direction
 move model moving =
     case moving of
         TurnLeft ->
@@ -281,25 +303,31 @@ move model moving =
 
 view : Model -> Html Msg
 view model =
-    Html.div [ Html.Attributes.class "ml_game" ]
-        [ Html.div [ Html.Attributes.class "ml_game_center" ]
-            [ viewWindow model
-            , viewMessage model.message
-            , viewInput "input" model.command Input KeyDown
-            , viewNews model
-            ]
-        , viewItemList model.items
-        ]
+    case model of
+        Playing state ->
+            Html.div [ Html.Attributes.class "ml_game" ]
+                [ Html.div [ Html.Attributes.class "ml_game_center" ]
+                    [ viewWindow state
+                    , viewMessage state.message
+                    , viewInput "input" state.command Input KeyDown
+                    , viewNews state
+                    ]
+                , viewItemList state.items
+                ]
+
+        _ ->
+            Html.div []
+                []
 
 
-viewNews : Model -> Html Msg
+viewNews : State -> Html Msg
 viewNews model =
     Html.div [ Html.Attributes.class "ml_game_news" ]
         [ Html.text (Types.Direction.toString model.direction)
         ]
 
 
-viewWindow : Model -> Html Msg
+viewWindow : State -> Html Msg
 viewWindow model =
     case model.place of
         Room placeModel ->

@@ -1,4 +1,4 @@
-module Scenes.Title exposing (Model, Msg, init, subscriptions, update, view)
+module Scenes.Title exposing (Model(..), Msg, init, subscriptions, update, view)
 
 import Browser.Events
 import Html exposing (Html)
@@ -11,17 +11,14 @@ import Utils.Keyboard exposing (onKeyDown)
 -- MODEL
 
 
-type alias Model =
-    { proceeded : Bool }
+type Model
+    = OnScreen
+    | Finished
 
 
-init : Model
+init : ( Model, Cmd Msg )
 init =
-    let
-        proceeded =
-            False
-    in
-    Model proceeded
+    ( OnScreen, Cmd.none )
 
 
 
@@ -32,11 +29,11 @@ type Msg
     = KeyDown
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update : Msg -> ( Model, Cmd Msg )
+update msg =
     case msg of
         KeyDown ->
-            ( { model | proceeded = True }, Cmd.none )
+            ( Finished, Cmd.none )
 
 
 
