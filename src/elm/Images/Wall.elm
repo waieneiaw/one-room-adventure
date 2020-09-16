@@ -12,6 +12,7 @@ view =
         [ Svg.Attributes.xlinkHref ("#" ++ id)
         , Svg.Attributes.x "0"
         , Svg.Attributes.y "0"
+        , Svg.Attributes.stroke Constants.Color.mainColor
         ]
         []
 
@@ -63,7 +64,6 @@ defImpl =
             , Svg.Attributes.width strInnerWidth
             , Svg.Attributes.height strInnerHeight
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.line
@@ -72,7 +72,6 @@ defImpl =
             , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerTopLeft.x)
             , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerTopLeft.y)
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.line
@@ -81,7 +80,6 @@ defImpl =
             , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerTopRight.x)
             , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerTopRight.y)
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.line
@@ -90,7 +88,6 @@ defImpl =
             , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerBottomLeft.x)
             , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerBottomLeft.y)
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.line
@@ -99,7 +96,6 @@ defImpl =
             , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerBottomRight.x)
             , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerBottomRight.y)
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         ]

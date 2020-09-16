@@ -29,6 +29,7 @@ view door { x, y } =
             [ Svg.Attributes.xlinkHref ("#" ++ openedId)
             , Svg.Attributes.x xStr
             , Svg.Attributes.y yStr
+            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
 
@@ -37,6 +38,7 @@ view door { x, y } =
             [ Svg.Attributes.xlinkHref ("#" ++ closedId)
             , Svg.Attributes.x xStr
             , Svg.Attributes.y yStr
+            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
 
@@ -77,7 +79,6 @@ defOpenedDoor =
             , Svg.Attributes.width "144"
             , Svg.Attributes.height "218"
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.line
@@ -86,7 +87,6 @@ defOpenedDoor =
             , Svg.Attributes.y2 "190"
             , Svg.Attributes.x2 "100"
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.line
@@ -95,7 +95,6 @@ defOpenedDoor =
             , Svg.Attributes.y2 "218"
             , Svg.Attributes.x2 "144"
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         ]
@@ -115,7 +114,6 @@ defClosedDoor =
             , Svg.Attributes.width "144"
             , Svg.Attributes.height "218"
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         , Svg.circle
@@ -123,7 +121,6 @@ defClosedDoor =
             , Svg.Attributes.cx "16"
             , Svg.Attributes.cy "120"
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
             ]
             []
         ]
