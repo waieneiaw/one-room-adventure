@@ -98,6 +98,60 @@ existsItem maybeItem =
             ( False, Types.Item.noneValue )
 
 
+onEnter : State -> State
+onEnter state =
+    let
+        ( place, result ) =
+            execCommand state state.command
+
+        ( exists, item ) =
+            existsItem result.item
+    in
+    { state
+        | place = place
+        , command = ""
+        , message = result.message
+        , items =
+            if exists == False then
+                state.items
+
+            else
+                item
+                    :: []
+                    |> List.append state.items
+    }
+
+
+onTurn : Moving -> State -> String -> State
+onTurn moving state message =
+    { state
+        | direction = move state moving
+        , command = ""
+        , message = message
+    }
+
+
+canEscape : State -> Bool
+canEscape state =
+    case state.place of
+        Room placeModel ->
+            let
+                door =
+                    placeModel.north.door
+
+                condition =
+                    case door of
+                        Types.Door.Unlocked doorState ->
+                            doorState.opened
+                                && state.direction
+                                == Types.Direction.North
+
+                        _ ->
+                            False
+            in
+            condition
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     let
@@ -122,76 +176,27 @@ update msg model =
                     case code of
                         -- Enter
                         13 ->
-                            let
-                                ( place, result ) =
-                                    execCommand state state.command
-                            in
-                            let
-                                ( exists, item ) =
-                                    existsItem result.item
-                            in
-                            ( Playing
-                                { state
-                                    | place = place
-                                    , command = ""
-                                    , message = result.message
-                                    , items =
-                                        if exists == False then
-                                            state.items
-
-                                        else
-                                            item
-                                                :: []
-                                                |> List.append state.items
-                                }
-                            , Cmd.none
-                            )
+                            ( Playing (onEnter state), Cmd.none )
 
                         -- <-
                         37 ->
-                            ( Playing
-                                { state
-                                    | direction = move state TurnLeft
-                                    , command = ""
-                                    , message = "左を向きました。"
-                                }
+                            ( Playing (onTurn TurnLeft state "左を向きました。")
                             , Cmd.none
                             )
 
                         -- ->
                         39 ->
-                            ( Playing
-                                { state
-                                    | direction = move state TurnRight
-                                    , command = ""
-                                    , message = "右を向きました。"
-                                }
+                            ( Playing (onTurn TurnRight state "右を向きました。")
                             , Cmd.none
                             )
 
                         -- ↑
                         38 ->
-                            case state.place of
-                                Room placeModel ->
-                                    let
-                                        door =
-                                            placeModel.north.door
+                            if canEscape state then
+                                ( Finished, Cmd.none )
 
-                                        condition =
-                                            case door of
-                                                Types.Door.Unlocked doorState ->
-                                                    doorState.opened
-                                                        && state.direction
-                                                        == Types.Direction.North
-
-                                                _ ->
-                                                    False
-                                    in
-                                    if condition then
-                                        ( Finished, Cmd.none )
-
-                                    else
-                                        noop
+                            else
+                                noop
 
                         _ ->
                             noop
