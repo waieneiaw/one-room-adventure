@@ -257,24 +257,24 @@ module.exports = {
       filename: 'static/css/[name].[hash:8].css',
       chunkFilename: 'static/css/[name].[hash:8].chunk.css',
     }),
-    new WebpackPwaManifest({
-      short_name: vars.appShortName,
-      name: vars.appName,
-      display: 'standalone',
-      start_url: 'index.html',
-      background_color: vars.appBgColor,
-      theme_color: vars.appThemeColor,
-      icons: [{
-        src: path.resolve(paths.appPublic, 'favicon.ico'),
-        sizes: [96, 128, 192, 256, 384, 512],
-      }]
-    }),
-    new WorkboxWebpackPlugin.GenerateSW({
-      cacheId: vars.cacheId,
-      swDest: path.resolve(paths.appBuild, 'sw.js'),
-      clientsClaim: true,
-      skipWaiting: true,
-      maximumFileSizeToCacheInBytes: 20000000,
-    }),
+    // new WebpackPwaManifest({
+    //   short_name: vars.appShortName,
+    //   name: vars.appName,
+    //   display: 'standalone',
+    //   start_url: 'index.html',
+    //   background_color: vars.appBgColor,
+    //   theme_color: vars.appThemeColor,
+    //   icons: [{
+    //     src: path.resolve(paths.appPublic, 'favicon.ico'),
+    //     sizes: [96, 128, 192, 256, 384, 512],
+    //   }]
+    // }),
+    // new WorkboxWebpackPlugin.GenerateSW({
+    //   cacheId: vars.cacheId,
+    //   swDest: path.resolve(paths.appBuild, 'sw.js'),
+    //   clientsClaim: true,
+    //   skipWaiting: true,
+    //   maximumFileSizeToCacheInBytes: 20000000,
+    // }),
   ],
 };
