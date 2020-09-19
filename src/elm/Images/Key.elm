@@ -12,7 +12,7 @@ id =
     "key"
 
 
-view : Types.Object.Object -> Types.Point.Point -> Svg msg
+view : Types.Object.Plain -> Types.Point.Point -> Svg msg
 view obj { x, y } =
     case obj of
         Types.Object.Exist _ ->

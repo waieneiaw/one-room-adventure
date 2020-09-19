@@ -12,21 +12,36 @@ import Types.Object
 
 
 type alias Model =
-    { key : Types.Object.Object
+    { key : Types.Object.Plain
+    , sofa : Types.Object.Plain
+    , cushion : Types.Object.Plain
+    , bronzeKey : Types.Object.Plain
     }
 
 
 init : Model
 init =
-    let
-        key =
-            Types.Object.Exist
-                { type_ = Types.Item.Key
-                , name = "鍵（KEY）"
-                , weight = 1
-                }
-    in
-    Model key
+    { sofa =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "ソファ（SOFA）"
+            }
+    , cushion =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "クッション（CUSHION）"
+            }
+    , bronzeKey =
+        Types.Object.Exist
+            { type_ = Types.Item.BronzeKey
+            , name = "銅色の鍵（BRONZE KEY）"
+            }
+    , key =
+        Types.Object.Exist
+            { type_ = Types.Item.Key
+            , name = "鍵（KEY）"
+            }
+    }
 
 
 update :
@@ -49,8 +64,8 @@ update { model, command } =
         ------------
         ( Types.Command.Noun.None, Types.Command.Verb.Look ) ->
             case model.key of
-                Types.Object.Exist _ ->
-                    message "鍵(KEY)が壁にかかっています。"
+                Types.Object.Exist item ->
+                    message (item.name ++ "が壁にかかっています。")
 
                 _ ->
                     message "南を向いています。何もありません。"

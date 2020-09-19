@@ -20,24 +20,11 @@ type alias Model =
 
 init : Model
 init =
-    let
-        north =
-            Places.Room.North.init
-
-        east =
-            Places.Room.East.init
-
-        west =
-            Places.Room.West.init
-
-        south =
-            Places.Room.South.init
-    in
-    Model
-        north
-        east
-        west
-        south
+    { north = Places.Room.North.init
+    , east = Places.Room.East.init
+    , west = Places.Room.West.init
+    , south = Places.Room.South.init
+    }
 
 
 update :

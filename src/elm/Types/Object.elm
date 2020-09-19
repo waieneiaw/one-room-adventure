@@ -1,8 +1,13 @@
-module Types.Object exposing (Object(..))
+module Types.Object exposing (Plain(..), WithKey(..))
 
 import Types.Item
 
 
-type Object
+type Plain
     = Exist Types.Item.Item
     | NotExist
+
+
+type WithKey
+    = Locked Plain
+    | Unlocked Plain

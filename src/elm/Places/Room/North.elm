@@ -15,26 +15,40 @@ import Types.Object
 
 type alias Model =
     { door : Types.Door.Door
-    , paper : Types.Object.Object
+    , paper : Types.Object.Plain
+    , board : Types.Object.WithKey
+    , screw : Types.Object.Plain
+    , paper2 : Types.Object.Plain
     }
 
 
 init : Model
 init =
-    let
-        door =
-            Types.Door.Locked
-
-        paper =
-            Types.Object.Exist
-                { type_ = Types.Item.Paper
-                , name = "紙（PAPER）"
-                , weight = 1
+    { door =
+        Types.Door.Locked
+    , paper =
+        Types.Object.Exist
+            { type_ = Types.Item.Paper
+            , name = "紙（PAPER）"
+            }
+    , board =
+        Types.Object.Locked
+            (Types.Object.Exist
+                { type_ = Types.Item.None
+                , name = "板（BOARD）"
                 }
-    in
-    Model
-        door
-        paper
+            )
+    , screw =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "ねじ（SCREW）"
+            }
+    , paper2 =
+        Types.Object.Exist
+            { type_ = Types.Item.PaperOfMachineTips
+            , name = "紙2（PAPER2）"
+            }
+    }
 
 
 update :

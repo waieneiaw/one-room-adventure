@@ -48,28 +48,12 @@ type Model
 
 init : ( Model, Cmd Msg )
 init =
-    let
-        command =
-            ""
-
-        message =
-            ""
-
-        place =
-            Room Places.Room.init
-
-        items =
-            []
-
-        direction =
-            Types.Direction.North
-    in
     ( Playing
-        { command = command
-        , message = message
-        , place = place
-        , items = items
-        , direction = direction
+        { command = ""
+        , message = ""
+        , place = Room Places.Room.init
+        , items = []
+        , direction = Types.Direction.North
         }
     , focusCommandBox
     )

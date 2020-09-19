@@ -6,15 +6,55 @@ import Types.Argument
 import Types.Command
 import Types.Command.Noun
 import Types.Command.Verb
+import Types.Item
+import Types.Object
 
 
 type alias Model =
-    {}
+    { desk : Types.Object.Plain
+    , drawer1 : Types.Object.Plain
+    , drawer2 : Types.Object.WithKey
+    , scissors : Types.Object.Plain
+    , paper1 : Types.Object.Plain
+    , notebook : Types.Object.Plain
+    }
 
 
 init : Model
 init =
-    Model
+    { desk =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "机（DESK）"
+            }
+    , drawer1 =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "上段の抽斗（DRAWER1）"
+            }
+    , drawer2 =
+        Types.Object.Locked
+            (Types.Object.Exist
+                { type_ = Types.Item.None
+                , name = "下段の抽斗（DRAWER2）"
+                }
+            )
+    , scissors =
+        Types.Object.Exist
+            { type_ = Types.Item.Scissors
+            , name = "はさみ（SCISSORS）"
+            }
+    , paper1 =
+        Types.Object.Exist
+            { type_ = Types.Item.PaperOfSafeTips
+            , name = "紙1（PAPER1）"
+            }
+    , notebook =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "ノート（NOTEBOOK）"
+            }
+    }
 
 
 update :

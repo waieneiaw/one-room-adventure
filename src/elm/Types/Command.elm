@@ -88,6 +88,5 @@ resultWithItem item =
         Just
             { type_ = item.type_
             , name = item.name
-            , weight = item.weight
             }
     }

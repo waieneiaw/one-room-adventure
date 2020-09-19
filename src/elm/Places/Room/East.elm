@@ -11,22 +11,40 @@ import Types.Object
 
 
 type alias Model =
-    { desk : Types.Object.Object
+    { rack : Types.Object.Plain
+    , safe : Types.Object.WithKey
+    , box : Types.Object.WithKey
+    , machine : Types.Object.Plain
     }
 
 
 init : Model
 init =
-    let
-        desk =
-            Types.Object.Exist
+    { rack =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "机（DESK）"
+            }
+    , safe =
+        Types.Object.Locked
+            (Types.Object.Exist
                 { type_ = Types.Item.None
-                , name = "机（DESK）"
-                , weight = 5
+                , name = "金庫（SAFE）"
                 }
-    in
-    Model
-        desk
+            )
+    , box =
+        Types.Object.Locked
+            (Types.Object.Exist
+                { type_ = Types.Item.None
+                , name = "鍵のついた箱（BOX）"
+                }
+            )
+    , machine =
+        Types.Object.Exist
+            { type_ = Types.Item.None
+            , name = "謎の機械（MACHINE）"
+            }
+    }
 
 
 update :
