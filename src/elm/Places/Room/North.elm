@@ -37,23 +37,38 @@ init =
         paper
 
 
-noResults : Model -> ( Model, Types.Command.Result )
-noResults model =
-    ( model, Types.Command.noResults )
-
-
 update :
     Types.Argument.UpdateDirectionArgs Model
     -> ( Model, Types.Command.Result )
 update { items, model, command } =
-    case ( command.verb, command.noun ) of
-        ( Types.Command.Verb.Open, Types.Command.Noun.Door ) ->
+    let
+        message : String -> ( Model, Types.Command.Result )
+        message text =
+            ( model, Types.Command.resultWithoutItem text )
+
+        noop =
+            ( model, Types.Command.noResults )
+    in
+    case ( command.noun, command.verb ) of
+        ------------
+        -- ONLY VERB
+        ------------
+        ( Types.Command.Noun.None, Types.Command.Verb.Look ) ->
+            case model.paper of
+                Types.Object.Exist _ ->
+                    message "目の前にドア(DOOR)と紙(PAPER)があります。"
+
+                _ ->
+                    message "目の前にドア(DOOR)があります。"
+
+        ------------
+        -- Door
+        ------------
+        ( Types.Command.Noun.Door, Types.Command.Verb.Open ) ->
             case model.door of
                 Types.Door.Locked ->
-                    ( model
-                    , Types.Command.resultWithoutItem
+                    message
                         "鍵がかかっているようです。"
-                    )
 
                 Types.Door.Unlocked _ ->
                     ( { model
@@ -63,7 +78,7 @@ update { items, model, command } =
                         "ドアを開けました。"
                     )
 
-        ( Types.Command.Verb.Close, Types.Command.Noun.Door ) ->
+        ( Types.Command.Noun.Door, Types.Command.Verb.Close ) ->
             ( { model
                 | door = Types.Door.Unlocked { opened = False }
               }
@@ -71,48 +86,24 @@ update { items, model, command } =
                 "ドアを閉めました。"
             )
 
-        ( Types.Command.Verb.Look, Types.Command.Noun.Door ) ->
-            ( model
-            , Types.Command.resultWithoutItem
-                "何の変哲もないドアです。"
-            )
+        ( Types.Command.Noun.Door, Types.Command.Verb.Look ) ->
+            message "何の変哲もないドアです。"
 
-        ( Types.Command.Verb.Look, Types.Command.Noun.Paper ) ->
+        ( Types.Command.Noun.Door, Types.Command.Verb.Take ) ->
+            message "さすがに無理です。"
+
+        ------------
+        -- Paper
+        ------------
+        ( Types.Command.Noun.Paper, Types.Command.Verb.Look ) ->
             case model.paper of
                 Types.Object.Exist _ ->
-                    ( model
-                    , Types.Command.resultWithoutItem
-                        "壁に貼り付けられています。取れそうです。"
-                    )
+                    message "壁に貼り付けられています。取れそうです。"
 
                 _ ->
-                    noResults model
+                    noop
 
-        ( Types.Command.Verb.Look, Types.Command.Noun.None ) ->
-            let
-                paper =
-                    case model.paper of
-                        Types.Object.Exist _ ->
-                            "、紙切れ(PAPER)"
-
-                        _ ->
-                            ""
-            in
-            ( model
-            , Types.Command.resultWithoutItem
-                ("目の前にドア(DOOR)"
-                    ++ paper
-                    ++ "があります。"
-                )
-            )
-
-        ( Types.Command.Verb.Take, Types.Command.Noun.Door ) ->
-            ( model
-            , Types.Command.resultWithoutItem
-                "さすがに無理です。"
-            )
-
-        ( Types.Command.Verb.Take, Types.Command.Noun.Paper ) ->
+        ( Types.Command.Noun.Paper, Types.Command.Verb.Take ) ->
             case model.paper of
                 Types.Object.Exist item ->
                     ( { model
@@ -122,9 +113,12 @@ update { items, model, command } =
                     )
 
                 _ ->
-                    noResults model
+                    noop
 
-        ( Types.Command.Verb.Use, Types.Command.Noun.Key ) ->
+        ------------
+        -- Key
+        ------------
+        ( Types.Command.Noun.Key, Types.Command.Verb.Use ) ->
             let
                 key =
                     Types.Item.getItem items Types.Item.Key
@@ -140,13 +134,13 @@ update { items, model, command } =
                             )
 
                         _ ->
-                            noResults model
+                            noop
 
                 _ ->
-                    noResults model
+                    noop
 
         _ ->
-            noResults model
+            noop
 
 
 view : Model -> List (Svg msg)

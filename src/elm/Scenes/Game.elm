@@ -226,6 +226,21 @@ execCommandWithPlace model command =
             ( Room newModel, result )
 
 
+reaction :
+    Maybe Types.Item.Item
+    -> Place
+    -> String
+    -> Maybe ( Place, Types.Command.Result )
+reaction item place text =
+    case item of
+        Just _ ->
+            Just
+                ( place, Types.Command.resultWithoutItem text )
+
+        _ ->
+            Nothing
+
+
 {-| Place問わずどこでも実行できるコマンドの実行処理。
 -}
 execCommandWithoutPlace :
@@ -239,16 +254,7 @@ execCommandWithoutPlace model { verb, noun } =
     in
     case ( verb, noun ) of
         ( Types.Command.Verb.Use, Types.Command.Noun.Paper ) ->
-            case paper of
-                Just _ ->
-                    Just
-                        ( model.place
-                        , Types.Command.resultWithoutItem
-                            "紙には何も書かれていません。"
-                        )
-
-                _ ->
-                    Nothing
+            reaction paper model.place "紙には何も書かれていません。"
 
         _ ->
             Nothing

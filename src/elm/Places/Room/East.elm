@@ -29,24 +29,29 @@ init =
         desk
 
 
-noResults : Model -> ( Model, Types.Command.Result )
-noResults model =
-    ( model, Types.Command.noResults )
-
-
 update :
     Types.Argument.UpdateDirectionArgs Model
     -> ( Model, Types.Command.Result )
 update { model, command } =
-    case ( command.verb, command.noun ) of
-        ( Types.Command.Verb.Look, Types.Command.Noun.None ) ->
+    let
+        message : String -> ( Model, Types.Command.Result )
+        message text =
             ( model
-            , Types.Command.resultWithoutItem
-                "東を向いています。何もありません。"
+            , Types.Command.resultWithoutItem text
             )
 
+        noop =
+            ( model, Types.Command.noResults )
+    in
+    case ( command.noun, command.verb ) of
+        ------------
+        -- ONLY VERB
+        ------------
+        ( Types.Command.Noun.None, Types.Command.Verb.Look ) ->
+            message "東を向いています。何もありません。"
+
         _ ->
-            noResults model
+            noop
 
 
 view : Model -> List (Svg msg)

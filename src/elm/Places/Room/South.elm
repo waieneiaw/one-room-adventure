@@ -29,42 +29,44 @@ init =
     Model key
 
 
-noResults : Model -> ( Model, Types.Command.Result )
-noResults model =
-    ( model, Types.Command.noResults )
-
-
 update :
     Types.Argument.UpdateDirectionArgs Model
     -> ( Model, Types.Command.Result )
 update { model, command } =
-    case ( command.verb, command.noun ) of
-        ( Types.Command.Verb.Look, Types.Command.Noun.None ) ->
+    let
+        message : String -> ( Model, Types.Command.Result )
+        message text =
+            ( model
+            , Types.Command.resultWithoutItem text
+            )
+
+        noop =
+            ( model, Types.Command.noResults )
+    in
+    case ( command.noun, command.verb ) of
+        ------------
+        -- ONLY VERB
+        ------------
+        ( Types.Command.Noun.None, Types.Command.Verb.Look ) ->
             case model.key of
                 Types.Object.Exist _ ->
-                    ( model
-                    , Types.Command.resultWithoutItem
-                        "鍵(KEY)が壁にかかっています。"
-                    )
+                    message "鍵(KEY)が壁にかかっています。"
 
                 _ ->
-                    ( model
-                    , Types.Command.resultWithoutItem
-                        "南を向いています。何もありません。"
-                    )
+                    message "南を向いています。何もありません。"
 
-        ( Types.Command.Verb.Look, Types.Command.Noun.Key ) ->
+        ------------
+        -- Key
+        ------------
+        ( Types.Command.Noun.Key, Types.Command.Verb.Look ) ->
             case model.key of
                 Types.Object.Exist _ ->
-                    ( model
-                    , Types.Command.resultWithoutItem
-                        "おそらくドアの鍵です。"
-                    )
+                    message "おそらくドアの鍵です。"
 
                 _ ->
-                    noResults model
+                    noop
 
-        ( Types.Command.Verb.Take, Types.Command.Noun.Key ) ->
+        ( Types.Command.Noun.Key, Types.Command.Verb.Take ) ->
             case model.key of
                 Types.Object.Exist item ->
                     ( { model | key = Types.Object.NotExist }
@@ -72,10 +74,10 @@ update { model, command } =
                     )
 
                 _ ->
-                    noResults model
+                    noop
 
         _ ->
-            noResults model
+            noop
 
 
 view : Model -> List (Svg msg)
