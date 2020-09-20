@@ -22,25 +22,33 @@ type alias Model =
 init : Model
 init =
     { sofa =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "ソファ（SOFA）"
             }
+        }
     , cushion =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "クッション（CUSHION）"
             }
+        }
     , bronzeKey =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.BronzeKey
-            , name = "銅色の鍵（BRONZE KEY）"
+            , name = "銅色の鍵（BRONZEKEY）"
             }
+        }
     , key =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.Key
             , name = "鍵（KEY）"
             }
+        }
     }
 
 
@@ -63,33 +71,35 @@ update { model, command } =
         -- ONLY VERB
         ------------
         ( Types.Command.Noun.None, Types.Command.Verb.Look ) ->
-            case model.key of
-                Types.Object.Exist item ->
-                    message (item.name ++ "が壁にかかっています。")
+            if model.key.status == Types.Object.Exist then
+                message (model.key.feature.name ++ "が壁にかかっています。")
 
-                _ ->
-                    message "南を向いています。何もありません。"
+            else
+                message "南を向いています。何もありません。"
 
         ------------
         -- Key
         ------------
         ( Types.Command.Noun.Key, Types.Command.Verb.Look ) ->
-            case model.key of
-                Types.Object.Exist _ ->
-                    message "おそらくドアの鍵です。"
+            if model.key.status == Types.Object.Exist then
+                message "おそらくドアの鍵です。"
 
-                _ ->
-                    noop
+            else
+                noop
 
         ( Types.Command.Noun.Key, Types.Command.Verb.Take ) ->
-            case model.key of
-                Types.Object.Exist item ->
-                    ( { model | key = Types.Object.NotExist }
-                    , Types.Command.resultWithItem item
-                    )
+            if model.key.status == Types.Object.Exist then
+                ( { model
+                    | key =
+                        { status = Types.Object.NotExist
+                        , feature = model.key.feature
+                        }
+                  }
+                , Types.Command.resultWithItem model.key
+                )
 
-                _ ->
-                    noop
+            else
+                noop
 
         _ ->
             noop

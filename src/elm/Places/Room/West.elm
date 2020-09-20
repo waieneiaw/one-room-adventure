@@ -23,37 +23,48 @@ type alias Model =
 init : Model
 init =
     { desk =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "机（DESK）"
             }
+        }
     , drawer1 =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "上段の抽斗（DRAWER1）"
             }
+        }
     , drawer2 =
         Types.Object.Locked
-            (Types.Object.Exist
+            { status = Types.Object.Exist
+            , feature =
                 { type_ = Types.Item.None
                 , name = "下段の抽斗（DRAWER2）"
                 }
-            )
+            }
     , scissors =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.Scissors
             , name = "はさみ（SCISSORS）"
             }
+        }
     , paper1 =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.PaperOfSafeTips
             , name = "紙1（PAPER1）"
             }
+        }
     , notebook =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "ノート（NOTEBOOK）"
             }
+        }
     }
 
 

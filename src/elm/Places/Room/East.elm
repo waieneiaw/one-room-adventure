@@ -15,35 +15,57 @@ type alias Model =
     , safe : Types.Object.WithKey
     , box : Types.Object.WithKey
     , machine : Types.Object.Plain
+    , silverKey : Types.Object.Plain
+    , goldKey : Types.Object.Plain
     }
 
 
 init : Model
 init =
     { rack =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "机（DESK）"
             }
+        }
     , safe =
         Types.Object.Locked
-            (Types.Object.Exist
+            { status = Types.Object.Exist
+            , feature =
                 { type_ = Types.Item.None
                 , name = "金庫（SAFE）"
                 }
-            )
+            }
     , box =
         Types.Object.Locked
-            (Types.Object.Exist
+            { status = Types.Object.Exist
+            , feature =
                 { type_ = Types.Item.None
                 , name = "鍵のついた箱（BOX）"
                 }
-            )
+            }
     , machine =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "謎の機械（MACHINE）"
             }
+        }
+    , silverKey =
+        { status = Types.Object.Exist
+        , feature =
+            { type_ = Types.Item.None
+            , name = "銀色の鍵（SILVERKEY）"
+            }
+        }
+    , goldKey =
+        { status = Types.Object.Exist
+        , feature =
+            { type_ = Types.Item.None
+            , name = "金色の鍵（GOLDKEY）"
+            }
+        }
     }
 
 

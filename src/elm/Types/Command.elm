@@ -12,6 +12,7 @@ import Regex
 import Types.Command.Noun
 import Types.Command.Verb
 import Types.Item
+import Types.Object
 
 
 type alias Command =
@@ -81,12 +82,9 @@ resultWithoutItem text =
 
 {-| コマンド実行の結果、messageとitemを返す場合。
 -}
-resultWithItem : Types.Item.Item -> Result
+resultWithItem : Types.Object.Plain -> Result
 resultWithItem item =
     { message = "OK!"
     , item =
-        Just
-            { type_ = item.type_
-            , name = item.name
-            }
+        Just item.feature
     }

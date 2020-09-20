@@ -14,19 +14,18 @@ id =
 
 view : Types.Object.Plain -> Types.Point.Point -> Svg msg
 view obj { x, y } =
-    case obj of
-        Types.Object.Exist _ ->
-            Svg.use
-                [ Svg.Attributes.xlinkHref ("#" ++ id)
-                , Svg.Attributes.x (String.fromInt x)
-                , Svg.Attributes.y (String.fromInt y)
-                , Svg.Attributes.fill Constants.Color.backgroundColor
-                , Svg.Attributes.stroke Constants.Color.mainColor
-                ]
-                []
+    if obj.status == Types.Object.Exist then
+        Svg.use
+            [ Svg.Attributes.xlinkHref ("#" ++ id)
+            , Svg.Attributes.x (String.fromInt x)
+            , Svg.Attributes.y (String.fromInt y)
+            , Svg.Attributes.fill Constants.Color.backgroundColor
+            , Svg.Attributes.stroke Constants.Color.mainColor
+            ]
+            []
 
-        _ ->
-            Svg.svg [ Svg.Attributes.id id ] []
+    else
+        Svg.svg [ Svg.Attributes.id id ] []
 
 
 defs : Svg msg

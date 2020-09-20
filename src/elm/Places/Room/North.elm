@@ -27,27 +27,34 @@ init =
     { door =
         Types.Door.Locked
     , paper =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.Paper
             , name = "紙（PAPER）"
             }
+        }
     , board =
         Types.Object.Locked
-            (Types.Object.Exist
+            { status = Types.Object.Exist
+            , feature =
                 { type_ = Types.Item.None
                 , name = "板（BOARD）"
                 }
-            )
+            }
     , screw =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.None
             , name = "ねじ（SCREW）"
             }
+        }
     , paper2 =
-        Types.Object.Exist
+        { status = Types.Object.Exist
+        , feature =
             { type_ = Types.Item.PaperOfMachineTips
             , name = "紙2（PAPER2）"
             }
+        }
     }
 
 
@@ -68,12 +75,11 @@ update { items, model, command } =
         -- ONLY VERB
         ------------
         ( Types.Command.Noun.None, Types.Command.Verb.Look ) ->
-            case model.paper of
-                Types.Object.Exist _ ->
-                    message "目の前にドア(DOOR)と紙(PAPER)があります。"
+            if model.paper.status == Types.Object.Exist then
+                message "目の前にドア(DOOR)と紙(PAPER)があります。"
 
-                _ ->
-                    message "目の前にドア(DOOR)があります。"
+            else
+                message "目の前にドア(DOOR)があります。"
 
         ------------
         -- Door
@@ -110,24 +116,25 @@ update { items, model, command } =
         -- Paper
         ------------
         ( Types.Command.Noun.Paper, Types.Command.Verb.Look ) ->
-            case model.paper of
-                Types.Object.Exist _ ->
-                    message "壁に貼り付けられています。取れそうです。"
+            if model.paper.status == Types.Object.Exist then
+                message "壁に貼り付けられています。取れそうです。"
 
-                _ ->
-                    noop
+            else
+                noop
 
         ( Types.Command.Noun.Paper, Types.Command.Verb.Take ) ->
-            case model.paper of
-                Types.Object.Exist item ->
-                    ( { model
-                        | paper = Types.Object.NotExist
-                      }
-                    , Types.Command.resultWithItem item
-                    )
+            if model.paper.status == Types.Object.Exist then
+                ( { model
+                    | paper =
+                        { status = Types.Object.NotExist
+                        , feature = model.paper.feature
+                        }
+                  }
+                , Types.Command.resultWithItem model.paper
+                )
 
-                _ ->
-                    noop
+            else
+                noop
 
         ------------
         -- Key
