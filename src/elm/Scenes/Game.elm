@@ -19,8 +19,8 @@ import Types.Command
 import Types.Command.Noun
 import Types.Command.Verb
 import Types.Direction
-import Types.Door
 import Types.Item
+import Types.Object
 import Utils.Keyboard
 
 
@@ -122,18 +122,14 @@ canEscape state =
             let
                 door =
                     placeModel.north.door
-
-                condition =
-                    case door of
-                        Types.Door.Unlocked doorState ->
-                            doorState.opened
-                                && state.direction
-                                == Types.Direction.North
-
-                        _ ->
-                            False
             in
-            condition
+            case door of
+                Types.Object.Opened _ ->
+                    state.direction
+                        == Types.Direction.North
+
+                _ ->
+                    False
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -210,35 +206,78 @@ execCommandWithPlace model command =
             ( Room newModel, result )
 
 
-reaction :
-    Maybe Types.Item.Item
-    -> Place
-    -> String
-    -> Maybe ( Place, Types.Command.Result )
-reaction item place text =
-    case item of
-        Just _ ->
-            Just
-                ( place, Types.Command.resultWithoutItem text )
-
-        _ ->
-            Nothing
-
-
 {-| Place問わずどこでも実行できるコマンドの実行処理。
 -}
 execCommandWithoutPlace :
     State
     -> Types.Command.Command
     -> Maybe ( Place, Types.Command.Result )
-execCommandWithoutPlace model { verb, noun } =
+execCommandWithoutPlace model command =
     let
-        paper =
-            Types.Item.getItem model.items Types.Item.Paper
+        reaction :
+            Maybe Types.Item.Item
+            -> String
+            -> Maybe ( Place, Types.Command.Result )
+        reaction item text =
+            case item of
+                Just _ ->
+                    Just
+                        ( model.place, Types.Command.resultWithMessage text )
+
+                _ ->
+                    Nothing
+
+        paperOfSafeTips =
+            Types.Item.getItem model.items Types.Item.PaperOfSafeTips
+
+        paperOfMachineTips =
+            Types.Item.getItem model.items Types.Item.PaperOfMachineTips
     in
-    case ( verb, noun ) of
-        ( Types.Command.Verb.Use, Types.Command.Noun.Paper ) ->
-            reaction paper model.place "紙には何も書かれていません。"
+    case command.noun of
+        Types.Command.Noun.PaperOfSafeTips ->
+            let
+                content =
+                    -- 記号は辺の数。それを踏まえて当てはめて算出できた数が答え。
+                    -- (3 * 1043) - 1111 = 2018
+                    "「"
+                        ++ "○ = 1、△ = 3"
+                        ++ "3 × ○✕□△ - ○○○○ = ????"
+                        ++ "」"
+                        ++ "と書かれています。"
+            in
+            case command.verb of
+                Types.Command.Verb.Use ->
+                    reaction paperOfSafeTips content
+
+                Types.Command.Verb.Read ->
+                    reaction paperOfSafeTips content
+
+                _ ->
+                    reaction paperOfSafeTips "NG!"
+
+        Types.Command.Noun.PaperOfMachineTips ->
+            let
+                content =
+                    -- 現時点で「open」コマンドで開くことのできるオブジェクトの数
+                    -- それぞれに3をかけると算出される数が答え
+                    -- N = 0 : なし -> 0
+                    -- E = 2 : box、safe -> 6
+                    -- W = 3 : notebook、drawer x 2 -> 9
+                    -- S = 1 : machine -> 3
+                    "「"
+                        ++ "OPENABLE -> NEWS -> × 3"
+                        ++ "」"
+                        ++ "と書かれています。"
+            in
+            case command.verb of
+                Types.Command.Verb.Use ->
+                    reaction paperOfMachineTips content
+
+                Types.Command.Verb.Read ->
+                    reaction paperOfMachineTips content
+
+                _ ->
+                    reaction paperOfSafeTips "NG!"
 
         _ ->
             Nothing

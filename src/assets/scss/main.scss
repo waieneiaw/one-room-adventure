@@ -140,9 +140,11 @@ body {
 .ml_game_message {
   border: 1px solid $game-frame-color;
   height: 100%;
+  line-height: 2rem;
   margin: spacing(4) 0;
   overflow: auto;
   padding: spacing(4);
+  width: $game-window-width;
 }
 
 .ml_game_input {
