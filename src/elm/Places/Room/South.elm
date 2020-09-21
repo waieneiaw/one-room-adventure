@@ -74,73 +74,41 @@ update { model, command } =
         noop =
             ( model, Types.Command.resultNg )
     in
-    case ( command.noun, command.verb ) of
+    case command.noun of
         ------------
         -- ONLY VERB
         ------------
-        ( Types.Command.Noun.None, Types.Command.Verb.Look ) ->
-            message (model.sofa.feature.name ++ "があります。")
+        Types.Command.Noun.None ->
+            case command.verb of
+                Types.Command.Verb.Look ->
+                    message (model.sofa.feature.name ++ "があります。")
+
+                _ ->
+                    noop
 
         ------------
         -- Bronze Key
         ------------
-        ( Types.Command.Noun.BronzeKey, Types.Command.Verb.Look ) ->
-            if model.bronzeKey.status == Types.Object.Exist then
-                message
-                    "銅の色をした、何の変哲もない鍵です。"
+        Types.Command.Noun.BronzeKey ->
+            case command.verb of
+                Types.Command.Verb.Look ->
+                    if model.bronzeKey.status == Types.Object.Exist then
+                        message
+                            "銅の色をした、何の変哲もない鍵です。"
 
-            else
-                noop
+                    else
+                        noop
 
-        ( Types.Command.Noun.BronzeKey, Types.Command.Verb.Take ) ->
-            if model.bronzeKey.status == Types.Object.Exist then
-                ( { model
-                    | bronzeKey =
-                        { status = Types.Object.Lost
-                        , feature = model.bronzeKey.feature
-                        }
-                  }
-                , Types.Command.resultWithItem model.bronzeKey
-                )
-
-            else
-                noop
-
-        ------------
-        -- Cushion
-        ------------
-        ( Types.Command.Noun.Cushion, Types.Command.Verb.Look ) ->
-            if model.cushion.status == Types.Object.Exist then
-                message
-                    "ソファに比べて、妙に安っぽいクッションです。"
-
-            else if model.bronzeKey.status == Types.Object.Exist then
-                message
-                    ("中身が出ています。"
-                        ++ model.bronzeKey.feature.name
-                        ++ "があります。"
-                    )
-
-            else
-                message
-                    "中身が出ています。"
-
-        ( Types.Command.Noun.Cushion, Types.Command.Verb.Take ) ->
-            if model.cushion.status == Types.Object.Exist then
-                message
-                    "ソファにくっついていて取れません。"
-
-            else
-                noop
-
-        ------------
-        -- Gold Key
-        ------------
-        ( Types.Command.Noun.GoldKey, Types.Command.Verb.Look ) ->
-            case model.machine of
-                Types.Object.Opened _ ->
-                    if model.goldKey.status == Types.Object.Exist then
-                        message "金色の鍵です。"
+                Types.Command.Verb.Take ->
+                    if model.bronzeKey.status == Types.Object.Exist then
+                        ( { model
+                            | bronzeKey =
+                                { status = Types.Object.Lost
+                                , feature = model.bronzeKey.feature
+                                }
+                          }
+                        , Types.Command.resultWithItem model.bronzeKey
+                        )
 
                     else
                         noop
@@ -148,21 +116,73 @@ update { model, command } =
                 _ ->
                     noop
 
-        ( Types.Command.Noun.GoldKey, Types.Command.Verb.Take ) ->
-            case model.machine of
-                Types.Object.Opened _ ->
-                    if model.goldKey.status == Types.Object.Exist then
-                        ( { model
-                            | goldKey =
-                                { status = Types.Object.Lost
-                                , feature = model.goldKey.feature
-                                }
-                          }
-                        , Types.Command.resultWithItem model.goldKey
-                        )
+        ------------
+        -- Cushion
+        ------------
+        Types.Command.Noun.Cushion ->
+            case command.verb of
+                Types.Command.Verb.Look ->
+                    if model.cushion.status == Types.Object.Exist then
+                        message
+                            "ソファに比べて、妙に安っぽいクッションです。"
+
+                    else if model.bronzeKey.status == Types.Object.Exist then
+                        message
+                            ("中身が出ています。"
+                                ++ model.bronzeKey.feature.name
+                                ++ "があります。"
+                            )
+
+                    else
+                        message
+                            "中身が出ています。"
+
+                Types.Command.Verb.Take ->
+                    if model.cushion.status == Types.Object.Exist then
+                        message
+                            "ソファにくっついていて取れません。"
 
                     else
                         noop
+
+                _ ->
+                    noop
+
+        ------------
+        -- Gold Key
+        ------------
+        Types.Command.Noun.GoldKey ->
+            case command.verb of
+                Types.Command.Verb.Look ->
+                    case model.machine of
+                        Types.Object.Opened _ ->
+                            if model.goldKey.status == Types.Object.Exist then
+                                message "金色の鍵です。"
+
+                            else
+                                noop
+
+                        _ ->
+                            noop
+
+                Types.Command.Verb.Take ->
+                    case model.machine of
+                        Types.Object.Opened _ ->
+                            if model.goldKey.status == Types.Object.Exist then
+                                ( { model
+                                    | goldKey =
+                                        { status = Types.Object.Lost
+                                        , feature = model.goldKey.feature
+                                        }
+                                  }
+                                , Types.Command.resultWithItem model.goldKey
+                                )
+
+                            else
+                                noop
+
+                        _ ->
+                            noop
 
                 _ ->
                     noop
@@ -170,61 +190,66 @@ update { model, command } =
         ------------
         -- Machine
         ------------
-        ( Types.Command.Noun.Machine, Types.Command.Verb.Look ) ->
-            case model.machine of
-                Types.Object.Opened _ ->
-                    if model.goldKey.status == Types.Object.Exist then
-                        message
-                            ("中には"
-                                ++ model.goldKey.feature.name
-                                ++ "が置かれています。"
+        Types.Command.Noun.Machine ->
+            case command.verb of
+                Types.Command.Verb.Look ->
+                    case model.machine of
+                        Types.Object.Opened _ ->
+                            if model.goldKey.status == Types.Object.Exist then
+                                message
+                                    ("中には"
+                                        ++ model.goldKey.feature.name
+                                        ++ "が置かれています。"
+                                    )
+
+                            else
+                                message "何もありません。"
+
+                        _ ->
+                            message
+                                ("4桁の数字を入力できそうです。"
+                                    ++ "入力する場合は`input 数字4桁`で"
+                                    ++ "コマンド入力してください。"
+                                )
+
+                Types.Command.Verb.Open ->
+                    case model.machine of
+                        Types.Object.Closed state ->
+                            ( { model
+                                | machine =
+                                    Types.Object.Opened state
+                              }
+                            , Types.Command.resultOk
                             )
 
-                    else
-                        message "何もありません。"
+                        _ ->
+                            noop
 
-                _ ->
-                    message
-                        ("4桁の数字を入力できそうです。"
-                            ++ "入力する場合は`input 数字4桁`で"
-                            ++ "コマンド入力してください。"
-                        )
+                Types.Command.Verb.Close ->
+                    case model.machine of
+                        Types.Object.Closed state ->
+                            ( { model
+                                | machine =
+                                    Types.Object.Closed state
+                              }
+                            , Types.Command.resultOk
+                            )
 
-        ( Types.Command.Noun.Machine, Types.Command.Verb.Open ) ->
-            case model.machine of
-                Types.Object.Closed state ->
-                    ( { model
-                        | machine =
-                            Types.Object.Opened state
-                      }
-                    , Types.Command.resultOk
-                    )
+                        _ ->
+                            noop
 
-                _ ->
-                    noop
+                Types.Command.Verb.Input ->
+                    case model.machine of
+                        Types.Object.Locked state ->
+                            ( { model
+                                | machine =
+                                    Types.Object.Closed state
+                              }
+                            , Types.Command.resultWithMessage "入力に成功しました。"
+                            )
 
-        ( Types.Command.Noun.Machine, Types.Command.Verb.Close ) ->
-            case model.machine of
-                Types.Object.Closed state ->
-                    ( { model
-                        | machine =
-                            Types.Object.Closed state
-                      }
-                    , Types.Command.resultOk
-                    )
-
-                _ ->
-                    noop
-
-        ( Types.Command.Noun.MachineUnlockNumber, Types.Command.Verb.Input ) ->
-            case model.machine of
-                Types.Object.Locked state ->
-                    ( { model
-                        | machine =
-                            Types.Object.Closed state
-                      }
-                    , Types.Command.resultWithMessage "入力に成功しました。"
-                    )
+                        _ ->
+                            noop
 
                 _ ->
                     noop
@@ -232,34 +257,44 @@ update { model, command } =
         ------------
         -- Sofa
         ------------
-        ( Types.Command.Noun.Sofa, Types.Command.Verb.Look ) ->
-            message
-                ("革製の高級そうなソファです。"
-                    ++ model.cushion.feature.name
-                    ++ "が置かれています。"
-                )
+        Types.Command.Noun.Sofa ->
+            case command.verb of
+                Types.Command.Verb.Look ->
+                    message
+                        ("革製の高級そうなソファです。"
+                            ++ model.cushion.feature.name
+                            ++ "が置かれています。"
+                        )
+
+                _ ->
+                    noop
 
         ------------
         -- ITEM
         ------------
-        ( Types.Command.Noun.Scissors, Types.Command.Verb.Use ) ->
-            if model.cushion.status == Types.Object.Exist then
-                ( { model
-                    | cushion =
-                        { status = Types.Object.Broken
-                        , feature = model.cushion.feature
-                        }
-                    , bronzeKey =
-                        { status = Types.Object.Exist
-                        , feature = model.bronzeKey.feature
-                        }
-                  }
-                , Types.Command.resultWithMessage
-                    "クッションを切りました。"
-                )
+        Types.Command.Noun.Scissors ->
+            case command.verb of
+                Types.Command.Verb.Use ->
+                    if model.cushion.status == Types.Object.Exist then
+                        ( { model
+                            | cushion =
+                                { status = Types.Object.Broken
+                                , feature = model.cushion.feature
+                                }
+                            , bronzeKey =
+                                { status = Types.Object.Exist
+                                , feature = model.bronzeKey.feature
+                                }
+                          }
+                        , Types.Command.resultWithMessage
+                            "クッションを切りました。"
+                        )
 
-            else
-                noop
+                    else
+                        noop
+
+                _ ->
+                    noop
 
         ------------
         -- NoOp
