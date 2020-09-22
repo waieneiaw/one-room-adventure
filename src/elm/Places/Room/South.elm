@@ -1,5 +1,6 @@
 module Places.Room.South exposing (Model, init, update, view)
 
+import Images.Cushion
 import Images.Sofa
 import Images.Wall
 import Svg exposing (Svg)
@@ -33,7 +34,7 @@ init =
         { status = Types.Object.Exist
         , feature =
             { type_ = Types.Item.None
-            , name = "クッション（CUSHION）"
+            , name = "角張ったクッション（CUSHION）"
             }
         }
     , bronzeKey =
@@ -124,7 +125,7 @@ update { model, command } =
                 Types.Command.Verb.Look ->
                     if model.cushion.status == Types.Object.Exist then
                         message
-                            "ソファに比べて、妙に安っぽいクッションです。"
+                            "妙に角張っていますが、触ってみると柔らかいです。"
 
                     else if model.bronzeKey.status == Types.Object.Exist then
                         message
@@ -294,6 +295,7 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Sofa.view model.sofa { x = 0, y = 200 }
+    , Images.Cushion.view model.cushion { x = 400, y = 280 }
 
     -- , Images.Key.view model.key { x = 200, y = 230 }
     ]

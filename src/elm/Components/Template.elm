@@ -6,6 +6,7 @@ module Components.Template exposing
 import Browser
 import Html exposing (Html)
 import Html.Attributes
+import Images.Cushion
 import Images.Door
 import Images.Key
 import Images.Paper
@@ -40,6 +41,7 @@ view toMsg content =
             , Images.Paper.defs
             , Images.Key.defs
             , Images.Sofa.defs
+            , Images.Cushion.defs
             ]
         ]
     }
