@@ -223,6 +223,32 @@ update { items, model, command } =
                 _ ->
                     noop
 
+        Types.Command.Noun.Screwdriver ->
+            case command.verb of
+                Types.Command.Verb.Use ->
+                    let
+                        screwdriver =
+                            Types.Item.getItem items Types.Item.Screwdriver
+                    in
+                    case model.board of
+                        Types.Object.Locked state ->
+                            case screwdriver of
+                                Just _ ->
+                                    ( { model
+                                        | board = Types.Object.Opened state
+                                      }
+                                    , Types.Command.resultWithMessage "板が外れました。"
+                                    )
+
+                                _ ->
+                                    noop
+
+                        _ ->
+                            noop
+
+                _ ->
+                    noop
+
         ------------
         -- NoOp
         ------------

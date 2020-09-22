@@ -10,6 +10,7 @@ type ItemType
     | PaperOfSafeTips
     | PaperOfMachineTips
     | Scissors
+    | Screw
     | Screwdriver
     | SilverKey
 

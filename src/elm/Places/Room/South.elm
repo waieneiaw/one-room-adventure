@@ -1,6 +1,6 @@
 module Places.Room.South exposing (Model, init, update, view)
 
-import Images.Key
+import Images.Sofa
 import Images.Wall
 import Svg exposing (Svg)
 import Types.Argument
@@ -225,19 +225,6 @@ update { model, command } =
                         _ ->
                             noop
 
-                Types.Command.Verb.Close ->
-                    case model.machine of
-                        Types.Object.Closed state ->
-                            ( { model
-                                | machine =
-                                    Types.Object.Closed state
-                              }
-                            , Types.Command.resultOk
-                            )
-
-                        _ ->
-                            noop
-
                 Types.Command.Verb.Input ->
                     case model.machine of
                         Types.Object.Locked state ->
@@ -306,6 +293,7 @@ update { model, command } =
 view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
+    , Images.Sofa.view model.sofa { x = 0, y = 200 }
 
     -- , Images.Key.view model.key { x = 200, y = 230 }
     ]
