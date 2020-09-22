@@ -253,7 +253,7 @@ execCommandWithoutPlace model command =
                     reaction paperOfSafeTips content
 
                 _ ->
-                    reaction paperOfSafeTips "NG!"
+                    Nothing
 
         Types.Command.Noun.PaperOfMachineTips ->
             let
@@ -277,7 +277,7 @@ execCommandWithoutPlace model command =
                     reaction paperOfMachineTips content
 
                 _ ->
-                    reaction paperOfSafeTips "NG!"
+                    Nothing
 
         _ ->
             Nothing

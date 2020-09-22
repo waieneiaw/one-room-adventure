@@ -1,6 +1,7 @@
 module Places.Room.East exposing (Model, init, update, view)
 
-import Images.Rack
+import Images.Box
+import Images.Safe
 import Images.Wall
 import Svg exposing (Svg)
 import Types.Argument
@@ -81,8 +82,19 @@ update { model, command } =
         Types.Command.Noun.None ->
             case command.verb of
                 Types.Command.Verb.Look ->
+                    let
+                        box =
+                            Types.Object.getOpenableState model.box
+
+                        safe =
+                            Types.Object.getOpenableState model.safe
+                    in
                     message
-                        (model.rack.feature.name ++ "があります。")
+                        (box.feature.name
+                            ++ "と"
+                            ++ safe.feature.name
+                            ++ "があります。"
+                        )
 
                 _ ->
                     noop
@@ -141,27 +153,24 @@ update { model, command } =
         ------------
         -- Rack
         ------------
-        Types.Command.Noun.Rack ->
-            case command.verb of
-                Types.Command.Verb.Look ->
-                    let
-                        box =
-                            Types.Object.getOpenableState model.box
-
-                        safe =
-                            Types.Object.getOpenableState model.safe
-                    in
-                    message
-                        ("中に"
-                            ++ box.feature.name
-                            ++ "と"
-                            ++ safe.feature.name
-                            ++ "があります。"
-                        )
-
-                _ ->
-                    noop
-
+        -- Types.Command.Noun.Rack ->
+        --     case command.verb of
+        --         Types.Command.Verb.Look ->
+        --             let
+        --                 box =
+        --                     Types.Object.getOpenableState model.box
+        --                 safe =
+        --                     Types.Object.getOpenableState model.safe
+        --             in
+        --             message
+        --                 ("中に"
+        --                     ++ box.feature.name
+        --                     ++ "と"
+        --                     ++ safe.feature.name
+        --                     ++ "があります。"
+        --                 )
+        --         _ ->
+        --             noop
         ------------
         -- Safe
         ------------
@@ -348,5 +357,6 @@ update { model, command } =
 view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
-    , Images.Rack.view model.rack { x = 382, y = 375 }
+    , Images.Box.view model.box { x = 70, y = 280 }
+    , Images.Safe.view model.safe { x = 230, y = 280 }
     ]

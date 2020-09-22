@@ -103,7 +103,7 @@ update { items, model, command } =
         Types.Command.Noun.Board ->
             case command.verb of
                 Types.Command.Verb.Look ->
-                    case model.door of
+                    case model.board of
                         Types.Object.Opened _ ->
                             message
                                 (model.paper2.feature.name
@@ -128,7 +128,7 @@ update { items, model, command } =
                     case model.door of
                         Types.Object.Locked _ ->
                             message
-                                ("何の変哲もないドアです。"
+                                ("妙に背の低いドアです。"
                                     ++ "鍵がかかっているようです。"
                                 )
 
@@ -142,7 +142,7 @@ update { items, model, command } =
 
                         _ ->
                             message
-                                "何の変哲もないドアです。"
+                                "妙に背の低いドアです。"
 
                 Types.Command.Verb.Close ->
                     case model.door of
@@ -170,6 +170,10 @@ update { items, model, command } =
                 Types.Command.Verb.Look ->
                     case model.board of
                         Types.Object.Opened _ ->
+                            let
+                                _ =
+                                    Debug.log "paper2" model.paper2.status
+                            in
                             if model.paper2.status == Types.Object.Exist then
                                 message
                                     "何か書かれています。"

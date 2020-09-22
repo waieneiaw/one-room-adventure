@@ -53,7 +53,7 @@ fromString value =
             Throw
 
         "unlock" ->
-            Use
+            Unlock
 
         "use" ->
             Use

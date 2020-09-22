@@ -7,6 +7,7 @@ import Browser
 import Html exposing (Html)
 import Html.Attributes
 import Images.Board
+import Images.Box
 import Images.Cushion
 import Images.Desk
 import Images.Door
@@ -16,6 +17,7 @@ import Images.LowerDrawer
 import Images.Machine
 import Images.Paper
 import Images.Rack
+import Images.Safe
 import Images.Sofa
 import Images.UpperDrawer
 import Images.Wall
@@ -45,6 +47,7 @@ view toMsg content =
         , Svg.defs []
             [ Images.Wall.defs
             , Images.Board.defs
+            , Images.Box.defs
             , Images.Cushion.defs
             , Images.Desk.defs
             , Images.Door.defs
@@ -54,6 +57,7 @@ view toMsg content =
             , Images.Machine.defs
             , Images.Paper.defs
             , Images.Rack.defs
+            , Images.Safe.defs
             , Images.Sofa.defs
             , Images.UpperDrawer.defs
             ]

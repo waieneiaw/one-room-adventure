@@ -157,12 +157,18 @@ update { model, command } =
                 Types.Command.Verb.Open ->
                     case target of
                         Types.Object.Closed state ->
-                            ( { model
-                                | drawer1 =
-                                    Types.Object.Opened state
-                              }
-                            , Types.Command.resultOk
-                            )
+                            case model.drawer2 of
+                                Types.Object.Opened _ ->
+                                    message
+                                        "何かがひっかかっていて開きません。"
+
+                                _ ->
+                                    ( { model
+                                        | drawer1 =
+                                            Types.Object.Opened state
+                                      }
+                                    , Types.Command.resultOk
+                                    )
 
                         _ ->
                             noop
@@ -193,24 +199,30 @@ update { model, command } =
             in
             case command.verb of
                 Types.Command.Verb.Look ->
-                    message
-                        "鍵穴がついた抽斗です。"
+                    case target of
+                        Types.Object.Opened _ ->
+                            message
+                                (model.paper1.feature.name ++ "が入っています。")
+
+                        _ ->
+                            message
+                                "鍵穴がついた抽斗です。"
 
                 Types.Command.Verb.Open ->
                     case target of
                         Types.Object.Closed state ->
                             case model.drawer1 of
-                                Types.Object.Closed _ ->
+                                Types.Object.Opened _ ->
+                                    message
+                                        "何かがひっかかっていて開きません。"
+
+                                _ ->
                                     ( { model
                                         | drawer2 =
                                             Types.Object.Opened state
                                       }
                                     , Types.Command.resultOk
                                     )
-
-                                _ ->
-                                    message
-                                        "何かがひっかかっていて開きません。"
 
                         _ ->
                             noop
@@ -401,6 +413,28 @@ update { model, command } =
                     noop
 
         ------------
+        -- ITEM
+        ------------
+        Types.Command.Noun.SilverKey ->
+            case command.verb of
+                Types.Command.Verb.Use ->
+                    case model.drawer2 of
+                        Types.Object.Locked state ->
+                            ( { model
+                                | drawer2 =
+                                    Types.Object.Closed state
+                              }
+                            , Types.Command.resultWithMessage
+                                "抽斗の鍵が開きました。"
+                            )
+
+                        _ ->
+                            noop
+
+                _ ->
+                    noop
+
+        ------------
         -- NoOp
         ------------
         _ ->
@@ -411,6 +445,6 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Desk.view model.desk { x = 32, y = 230 }
-    , Images.UpperDrawer.view model.drawer1 { x = 382, y = 290 }
     , Images.LowerDrawer.view model.drawer2 { x = 382, y = 375 }
+    , Images.UpperDrawer.view model.drawer1 { x = 382, y = 290 }
     ]
