@@ -26,6 +26,7 @@ view obj { x, y } =
                 , Svg.Attributes.x (String.fromInt x)
                 , Svg.Attributes.y (String.fromInt y)
                 , Svg.Attributes.fill Constants.Color.backgroundColor
+                , Svg.Attributes.fillOpacity "0"
                 , Svg.Attributes.stroke Constants.Color.mainColor
                 ]
                 []

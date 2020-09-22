@@ -1,6 +1,7 @@
 module Places.Room.South exposing (Model, init, update, view)
 
 import Images.Cushion
+import Images.GoldKey
 import Images.Machine
 import Images.Sofa
 import Images.Wall
@@ -55,7 +56,7 @@ init =
     , goldKey =
         { status = Types.Object.Exist
         , feature =
-            { type_ = Types.Item.None
+            { type_ = Types.Item.GoldKey
             , name = "金色の鍵（GOLDKEY）"
             }
         }
@@ -168,7 +169,7 @@ update { model, command } =
                     case model.machine of
                         Types.Object.Opened _ ->
                             if model.goldKey.status == Types.Object.Exist then
-                                message "金色の鍵です。"
+                                message "金色に輝いている鍵です。高級感が漂います。"
 
                             else
                                 noop
@@ -311,5 +312,6 @@ view model =
     [ Images.Wall.view
     , Images.Sofa.view model.sofa { x = 0, y = 200 }
     , Images.Cushion.view model.cushion { x = 400, y = 270 }
+    , Images.GoldKey.view model.goldKey { x = 305, y = 145 }
     , Images.Machine.view model.machine { x = 260, y = 140 }
     ]

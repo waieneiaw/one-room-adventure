@@ -8,6 +8,7 @@ import Html exposing (Html)
 import Html.Attributes
 import Images.Cushion
 import Images.Door
+import Images.GoldKey
 import Images.Key
 import Images.Machine
 import Images.Paper
@@ -44,6 +45,7 @@ view toMsg content =
             , Images.Sofa.defs
             , Images.Machine.defs
             , Images.Cushion.defs
+            , Images.GoldKey.defs
             ]
         ]
     }

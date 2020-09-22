@@ -203,13 +203,16 @@ update { items, model, command } =
                     let
                         goldKey =
                             Types.Item.getItem items Types.Item.GoldKey
+
+                        _ =
+                            Debug.log "goldkey" goldKey
                     in
                     case model.door of
                         Types.Object.Locked state ->
                             case goldKey of
                                 Just _ ->
                                     ( { model
-                                        | door = Types.Object.Closed state
+                                        | door = Types.Object.Opened state
                                       }
                                     , Types.Command.resultWithMessage "ドアの鍵が開きました。"
                                     )
