@@ -6,6 +6,7 @@ module Components.Template exposing
 import Browser
 import Html exposing (Html)
 import Html.Attributes
+import Images.Board
 import Images.Cushion
 import Images.Door
 import Images.GoldKey
@@ -39,13 +40,14 @@ view toMsg content =
             ]
         , Svg.defs []
             [ Images.Wall.defs
-            , Images.Door.defs
-            , Images.Paper.defs
-            , Images.Key.defs
-            , Images.Sofa.defs
-            , Images.Machine.defs
+            , Images.Board.defs
             , Images.Cushion.defs
+            , Images.Door.defs
             , Images.GoldKey.defs
+            , Images.Key.defs
+            , Images.Machine.defs
+            , Images.Paper.defs
+            , Images.Sofa.defs
             ]
         ]
     }

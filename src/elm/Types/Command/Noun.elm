@@ -6,6 +6,7 @@ import Types.Item exposing (ItemType(..))
 type Noun
     = None
     | Never
+    | Board
     | Box
     | BronzeKey
     | Cushion
@@ -36,6 +37,9 @@ fromString value =
                 |> Maybe.map (\value_ -> String.toLower value_)
     in
     case noun of
+        Just "board" ->
+            Board
+
         Just "box" ->
             Box
 

@@ -1,5 +1,6 @@
 module Places.Room.North exposing (Model, init, update, view)
 
+import Images.Board
 import Images.Door
 import Images.Wall
 import Svg exposing (Svg)
@@ -91,6 +92,28 @@ update { items, model, command } =
                                     ++ "と"
                                     ++ board.feature.name
                                     ++ "があります。"
+                                )
+
+                _ ->
+                    noop
+
+        ------------
+        -- Board
+        ------------
+        Types.Command.Noun.Board ->
+            case command.verb of
+                Types.Command.Verb.Look ->
+                    case model.door of
+                        Types.Object.Opened _ ->
+                            message
+                                (model.paper2.feature.name
+                                    ++ "が置いてあります。"
+                                )
+
+                        _ ->
+                            message
+                                ("金属の板です。"
+                                    ++ "ネジでしっかり固定されています。"
                                 )
 
                 _ ->
@@ -203,9 +226,6 @@ update { items, model, command } =
                     let
                         goldKey =
                             Types.Item.getItem items Types.Item.GoldKey
-
-                        _ =
-                            Debug.log "goldkey" goldKey
                     in
                     case model.door of
                         Types.Object.Locked state ->
@@ -263,6 +283,5 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Door.view model.door { x = 360, y = 196 }
-
-    -- , Images.Paper.view model.paper { x = 100, y = 200 }
+    , Images.Board.view model.board { x = 120, y = 180 }
     ]
