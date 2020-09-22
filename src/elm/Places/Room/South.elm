@@ -1,6 +1,7 @@
 module Places.Room.South exposing (Model, init, update, view)
 
 import Images.Cushion
+import Images.Machine
 import Images.Sofa
 import Images.Wall
 import Svg exposing (Svg)
@@ -82,7 +83,16 @@ update { model, command } =
         Types.Command.Noun.None ->
             case command.verb of
                 Types.Command.Verb.Look ->
-                    message (model.sofa.feature.name ++ "があります。")
+                    let
+                        machine =
+                            Types.Object.getOpenableState model.machine
+                    in
+                    message
+                        (model.sofa.feature.name
+                            ++ "と"
+                            ++ machine.feature.name
+                            ++ "があります。"
+                        )
 
                 _ ->
                     noop
@@ -226,12 +236,17 @@ update { model, command } =
                         _ ->
                             noop
 
+                _ ->
+                    noop
+
+        Types.Command.Noun.MachineUnlockNumber ->
+            case command.verb of
                 Types.Command.Verb.Input ->
                     case model.machine of
                         Types.Object.Locked state ->
                             ( { model
                                 | machine =
-                                    Types.Object.Closed state
+                                    Types.Object.Opened state
                               }
                             , Types.Command.resultWithMessage "入力に成功しました。"
                             )
@@ -295,7 +310,6 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Sofa.view model.sofa { x = 0, y = 200 }
-    , Images.Cushion.view model.cushion { x = 400, y = 280 }
-
-    -- , Images.Key.view model.key { x = 200, y = 230 }
+    , Images.Cushion.view model.cushion { x = 400, y = 270 }
+    , Images.Machine.view model.machine { x = 260, y = 140 }
     ]

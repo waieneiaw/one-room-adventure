@@ -9,6 +9,7 @@ import Html.Attributes
 import Images.Cushion
 import Images.Door
 import Images.Key
+import Images.Machine
 import Images.Paper
 import Images.Sofa
 import Images.Wall
@@ -41,6 +42,7 @@ view toMsg content =
             , Images.Paper.defs
             , Images.Key.defs
             , Images.Sofa.defs
+            , Images.Machine.defs
             , Images.Cushion.defs
             ]
         ]

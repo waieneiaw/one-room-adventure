@@ -53,11 +53,11 @@ defImpl =
         , Svg.Attributes.height strHeight
         , Svg.Attributes.viewBox ("0 0 " ++ strWidth ++ " " ++ strHeight)
         ]
-        [ defLeg { x = 60, y = 220 }
-        , defLeg { x = 570, y = 220 }
+        [ defLeg { x = 80, y = 220 }
+        , defLeg { x = 550, y = 220 }
         , defSeat { x = 32, y = 170 }
         , defBackrest { x = 80, y = 40 }
-        , defLeftArmrest { x = 32, y = 130 }
+        , defLeftArmrest { x = 40, y = 130 }
         , defRightArmrest { x = 540, y = 130 }
         ]
 
