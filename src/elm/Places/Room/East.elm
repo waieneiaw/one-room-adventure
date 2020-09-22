@@ -1,5 +1,6 @@
 module Places.Room.East exposing (Model, init, update, view)
 
+import Images.Rack
 import Images.Wall
 import Svg exposing (Svg)
 import Types.Argument
@@ -345,6 +346,7 @@ update { model, command } =
 
 
 view : Model -> List (Svg msg)
-view _ =
+view model =
     [ Images.Wall.view
+    , Images.Rack.view model.rack { x = 382, y = 375 }
     ]

@@ -6,6 +6,7 @@ import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
 import Types.Point
+import Utils.Svg
 
 
 id : String
@@ -29,6 +30,13 @@ view obj { x, y } =
         Svg.svg [ Svg.Attributes.id id ] []
 
 
+size : Types.Point.Size
+size =
+    { width = Constants.Wall.width
+    , height = 300
+    }
+
+
 defs : Svg msg
 defs =
     Svg.defs []
@@ -40,19 +48,10 @@ defs =
 
 defImpl : Svg msg
 defImpl =
-    let
-        strWidth =
-            String.fromInt Constants.Wall.width
-
-        strHeight =
-            String.fromInt 300
-    in
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.width strWidth
-        , Svg.Attributes.height strHeight
-        , Svg.Attributes.viewBox ("0 0 " ++ strWidth ++ " " ++ strHeight)
-        ]
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
         [ defLeftLeg { x = 50, y = 0 }
         , defRightLeg { x = 500, y = 0 }
         , defCabinet { x = 330, y = 60 }
@@ -63,38 +62,37 @@ defImpl =
 defSurface : Types.Point.Point -> Svg msg
 defSurface point =
     let
-        strWidth =
-            String.fromInt (Constants.Wall.innerWidth + 64)
-
-        strHeight =
-            String.fromInt 60
+        size_ : Types.Point.Size
+        size_ =
+            { width = Constants.Wall.innerWidth + 64
+            , height = 60
+            }
     in
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.x (String.fromInt point.x)
-        , Svg.Attributes.y (String.fromInt point.y)
-        , Svg.Attributes.width strWidth
-        , Svg.Attributes.height strHeight
-        , Svg.Attributes.viewBox
-            ("0 0 "
-                ++ strWidth
-                ++ " "
-                ++ strHeight
-            )
-        ]
+    Utils.Svg.createSvg
+        point
+        size_
+        []
         [ Svg.rect
             [ Svg.Attributes.x "0"
             , Svg.Attributes.y "30"
-            , Svg.Attributes.width strWidth
+            , Svg.Attributes.width (String.fromInt size_.width)
             , Svg.Attributes.height "30"
             ]
             []
         , Svg.polygon
             [ Svg.Attributes.points
-                ("32,0 0,30 "
-                    ++ "0,30 600,30 "
-                    ++ "578,30 544,0 "
-                    ++ "546,0 32,0 "
+                (Utils.Svg.createPolygonLine
+                    { x = 32, y = 0 }
+                    { x = 0, y = 30 }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 0, y = 30 }
+                        { x = 600, y = 30 }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 578, y = 30 }
+                        { x = 544, y = 0 }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 546, y = 0 }
+                        { x = 32, y = 0 }
                 )
             ]
             []
@@ -104,42 +102,41 @@ defSurface point =
 defLeftLeg : Types.Point.Point -> Svg msg
 defLeftLeg point =
     let
-        width =
-            "60"
-
         legWidth =
-            "30"
+            30
 
-        height =
-            "230"
+        legDepth =
+            30
+
+        size_ : Types.Point.Size
+        size_ =
+            { width = 60
+            , height = 230
+            }
     in
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.x (String.fromInt point.x)
-        , Svg.Attributes.y (String.fromInt point.y)
-        , Svg.Attributes.width width
-        , Svg.Attributes.height height
-        , Svg.Attributes.viewBox
-            ("0 0"
-                ++ " "
-                ++ width
-                ++ " "
-                ++ height
-            )
-        ]
+    Utils.Svg.createSvg
+        point
+        size_
+        []
         [ Svg.polygon
             [ Svg.Attributes.points
-                ("30,0 30,230 "
-                    ++ "30,230 60,190 "
-                    ++ "60,190 60,0 "
+                (Utils.Svg.createPolygonLine
+                    { x = legWidth, y = 0 }
+                    { x = legWidth, y = size_.height }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = legWidth, y = size_.height }
+                        { x = size_.width, y = size_.height - legDepth }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = size_.width, y = size_.height - legDepth }
+                        { x = size_.width, y = 0 }
                 )
             ]
             []
         , Svg.rect
             [ Svg.Attributes.x "0"
             , Svg.Attributes.y "0"
-            , Svg.Attributes.width legWidth
-            , Svg.Attributes.height height
+            , Svg.Attributes.width (String.fromInt legWidth)
+            , Svg.Attributes.height (String.fromInt size_.height)
             ]
             []
         ]
@@ -148,31 +145,21 @@ defLeftLeg point =
 defRightLeg : Types.Point.Point -> Svg msg
 defRightLeg point =
     let
-        width =
-            "30"
-
-        height =
-            "230"
+        size_ : Types.Point.Size
+        size_ =
+            { width = 30
+            , height = 230
+            }
     in
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.x (String.fromInt point.x)
-        , Svg.Attributes.y (String.fromInt point.y)
-        , Svg.Attributes.width width
-        , Svg.Attributes.height height
-        , Svg.Attributes.viewBox
-            ("0 0"
-                ++ " "
-                ++ width
-                ++ " "
-                ++ height
-            )
-        ]
+    Utils.Svg.createSvg
+        point
+        size_
+        []
         [ Svg.rect
             [ Svg.Attributes.x "0"
             , Svg.Attributes.y "0"
-            , Svg.Attributes.width width
-            , Svg.Attributes.height height
+            , Svg.Attributes.width (String.fromInt size_.width)
+            , Svg.Attributes.height (String.fromInt size_.height)
             ]
             []
         ]
@@ -181,62 +168,44 @@ defRightLeg point =
 defCabinet : Types.Point.Point -> Svg msg
 defCabinet point =
     let
-        width =
-            "170"
-
-        surfaceWidth =
-            "150"
-
         surfaceX =
-            "20"
+            20
 
-        height =
-            "170"
+        size_ : Types.Point.Size
+        size_ =
+            { width = 170
+            , height = 170
+            }
 
-        drawerHeight =
-            "85"
+        surfaceSize_ : Types.Point.Size
+        surfaceSize_ =
+            { width = 150
+            , height = 85
+            }
     in
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.x (String.fromInt point.x)
-        , Svg.Attributes.y (String.fromInt point.y)
-        , Svg.Attributes.width width
-        , Svg.Attributes.height height
-        , Svg.Attributes.viewBox
-            ("0 0"
-                ++ " "
-                ++ width
-                ++ " "
-                ++ height
-            )
-        ]
+    Utils.Svg.createSvg
+        point
+        size_
+        []
         [ Svg.polygon
             [ Svg.Attributes.points
-                ("20,0 20,170 "
-                    ++ "20,170 0,150 "
-                    ++ "0,150 0,0 "
+                (Utils.Svg.createPolygonLine
+                    { x = surfaceX, y = 0 }
+                    { x = surfaceX, y = size_.height }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = surfaceX, y = size_.height }
+                        { x = 0, y = size_.height - surfaceX }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 0, y = size_.height - surfaceX }
+                        { x = 0, y = 0 }
                 )
             ]
             []
         , Svg.rect
-            [ Svg.Attributes.x surfaceX
-            , Svg.Attributes.y "0"
-            , Svg.Attributes.width surfaceWidth
-            , Svg.Attributes.height height
-            ]
-            []
-        , Svg.rect
-            [ Svg.Attributes.x surfaceX
-            , Svg.Attributes.y "0"
-            , Svg.Attributes.width surfaceWidth
-            , Svg.Attributes.height drawerHeight
-            ]
-            []
-        , Svg.rect
-            [ Svg.Attributes.x surfaceX
-            , Svg.Attributes.y drawerHeight
-            , Svg.Attributes.width surfaceWidth
-            , Svg.Attributes.height drawerHeight
+            [ Svg.Attributes.x (String.fromInt surfaceX)
+            , Svg.Attributes.y (String.fromInt surfaceSize_.height)
+            , Svg.Attributes.width (String.fromInt surfaceSize_.width)
+            , Svg.Attributes.height (String.fromInt surfaceSize_.height)
             ]
             []
         ]

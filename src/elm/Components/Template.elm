@@ -15,6 +15,7 @@ import Images.Key
 import Images.LowerDrawer
 import Images.Machine
 import Images.Paper
+import Images.Rack
 import Images.Sofa
 import Images.UpperDrawer
 import Images.Wall
@@ -52,6 +53,7 @@ view toMsg content =
             , Images.LowerDrawer.defs
             , Images.Machine.defs
             , Images.Paper.defs
+            , Images.Rack.defs
             , Images.Sofa.defs
             , Images.UpperDrawer.defs
             ]
