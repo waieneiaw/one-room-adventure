@@ -1,5 +1,8 @@
 module Places.Room.West exposing (Model, init, update, view)
 
+import Images.Desk
+import Images.LowerDrawer
+import Images.UpperDrawer
 import Images.Wall
 import Svg exposing (Svg)
 import Types.Argument
@@ -166,7 +169,7 @@ update { model, command } =
 
                 Types.Command.Verb.Close ->
                     case target of
-                        Types.Object.Closed state ->
+                        Types.Object.Opened state ->
                             ( { model
                                 | drawer1 =
                                     Types.Object.Closed state
@@ -405,6 +408,9 @@ update { model, command } =
 
 
 view : Model -> List (Svg msg)
-view _ =
+view model =
     [ Images.Wall.view
+    , Images.Desk.view model.desk { x = 32, y = 230 }
+    , Images.UpperDrawer.view model.drawer1 { x = 382, y = 290 }
+    , Images.LowerDrawer.view model.drawer2 { x = 382, y = 375 }
     ]

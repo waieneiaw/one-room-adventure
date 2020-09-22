@@ -8,12 +8,15 @@ import Html exposing (Html)
 import Html.Attributes
 import Images.Board
 import Images.Cushion
+import Images.Desk
 import Images.Door
 import Images.GoldKey
 import Images.Key
+import Images.LowerDrawer
 import Images.Machine
 import Images.Paper
 import Images.Sofa
+import Images.UpperDrawer
 import Images.Wall
 import Svg
 
@@ -42,12 +45,15 @@ view toMsg content =
             [ Images.Wall.defs
             , Images.Board.defs
             , Images.Cushion.defs
+            , Images.Desk.defs
             , Images.Door.defs
             , Images.GoldKey.defs
             , Images.Key.defs
+            , Images.LowerDrawer.defs
             , Images.Machine.defs
             , Images.Paper.defs
             , Images.Sofa.defs
+            , Images.UpperDrawer.defs
             ]
         ]
     }
