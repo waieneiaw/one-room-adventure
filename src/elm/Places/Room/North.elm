@@ -2,6 +2,8 @@ module Places.Room.North exposing (Model, init, update, view)
 
 import Images.Board
 import Images.Door
+import Images.HoleWithBoard
+import Images.Paper
 import Images.Wall
 import Svg exposing (Svg)
 import Types.Argument
@@ -287,5 +289,7 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Door.view model.door { x = 360, y = 196 }
+    , Images.HoleWithBoard.view { x = 120, y = 180 }
+    , Images.Paper.view model.paper2 { x = 160, y = 275 }
     , Images.Board.view model.board { x = 120, y = 180 }
     ]

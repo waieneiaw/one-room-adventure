@@ -5,6 +5,7 @@ import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
 import Types.Point
+import Utils.Svg
 
 
 openedId : String
@@ -54,19 +55,24 @@ defs =
         ]
 
 
+size : Types.Point.Size
+size =
+    { width = 120
+    , height = 120
+    }
+
+
 defClosed : Svg msg
 defClosed =
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.width "120"
-        , Svg.Attributes.height "120"
-        , Svg.Attributes.viewBox "0 0 120 120"
-        ]
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
         [ Svg.rect
             [ Svg.Attributes.x "0"
             , Svg.Attributes.y "0"
-            , Svg.Attributes.width "120"
-            , Svg.Attributes.height "120"
+            , Svg.Attributes.width (String.fromInt size.width)
+            , Svg.Attributes.height (String.fromInt size.height)
             ]
             []
         , defScrew { x = 5, y = 5 }
@@ -94,17 +100,15 @@ defScrew point =
 
 defOpened : Svg msg
 defOpened =
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.width "120"
-        , Svg.Attributes.height "120"
-        , Svg.Attributes.viewBox "0 0 120 120"
-        ]
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
         [ Svg.rect
             [ Svg.Attributes.x "0"
             , Svg.Attributes.y "0"
-            , Svg.Attributes.width "120"
-            , Svg.Attributes.height "120"
+            , Svg.Attributes.width (String.fromInt size.width)
+            , Svg.Attributes.height (String.fromInt size.height)
             ]
             []
         ]

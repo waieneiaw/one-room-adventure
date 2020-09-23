@@ -14,6 +14,7 @@ import Images.Cushion
 import Images.Desk
 import Images.Door
 import Images.GoldKey
+import Images.HoleWithBoard
 import Images.Key
 import Images.LowerDrawer
 import Images.Machine
@@ -63,6 +64,7 @@ view toMsg content =
             , Images.Machine.defs
             , Images.Paper.defs
             , Images.Rack.defs
+            , Images.HoleWithBoard.defs
             , Images.Safe.defs
             , Images.SafeDoor.defs
             , Images.Screwdriver.defs

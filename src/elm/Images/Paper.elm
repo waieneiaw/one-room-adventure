@@ -5,6 +5,7 @@ import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
 import Types.Point
+import Utils.Svg
 
 
 id : String
@@ -37,19 +38,36 @@ defs =
         ]
 
 
+size : Types.Point.Size
+size =
+    { width = 40
+    , height = 20
+    }
+
+
+depth : Int
+depth =
+    6
+
+
 defImpl : Svg msg
 defImpl =
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.width "52"
-        , Svg.Attributes.height "72"
-        , Svg.Attributes.viewBox "0 0 52 72"
-        ]
-        [ Svg.rect
-            [ Svg.Attributes.x "0"
-            , Svg.Attributes.y "0"
-            , Svg.Attributes.width "50"
-            , Svg.Attributes.height "70"
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
+        [ Svg.polygon
+            [ Svg.Attributes.points
+                (Utils.Svg.createPolygonLine
+                    { x = depth, y = 0 }
+                    { x = 0, y = size.height }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 0, y = size.height }
+                        { x = size.width, y = size.height }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = size.width, y = size.height }
+                        { x = size.width - depth, y = 0 }
+                )
             ]
             []
         ]

@@ -242,7 +242,10 @@ update { model, command } =
                                 | machine =
                                     Types.Object.Opened state
                               }
-                            , Types.Command.resultWithMessage "入力に成功しました。"
+                            , Types.Command.resultWithMessage
+                                ("入力に成功しました。"
+                                    ++ "鍵が出てきました。"
+                                )
                             )
 
                         _ ->
