@@ -2,6 +2,7 @@ module Places.Room.West exposing (Model, init, update, view)
 
 import Images.Desk
 import Images.LowerDrawer
+import Images.Notebook
 import Images.UpperDrawer
 import Images.Wall
 import Svg exposing (Svg)
@@ -29,7 +30,7 @@ init =
         { status = Types.Object.Exist
         , feature =
             { type_ = Types.Item.None
-            , name = "机（DESK）"
+            , name = "とても大きな机（DESK）"
             }
         }
     , drawer1 =
@@ -196,13 +197,21 @@ update { model, command } =
             let
                 target =
                     model.drawer2
+
+                item =
+                    model.paper1
             in
             case command.verb of
                 Types.Command.Verb.Look ->
                     case target of
                         Types.Object.Opened _ ->
-                            message
-                                (model.paper1.feature.name ++ "が入っています。")
+                            if item.status == Types.Object.Exist then
+                                message
+                                    (model.paper1.feature.name ++ "が入っています。")
+
+                            else
+                                message
+                                    "何もありません。"
 
                         _ ->
                             message
@@ -382,7 +391,7 @@ update { model, command } =
                     case model.drawer1 of
                         Types.Object.Opened _ ->
                             if target.status == Types.Object.Exist then
-                                message "ふつうのはさみです。"
+                                message "大きなはさみです。裁断ばさみだと思います。"
 
                             else
                                 noop
@@ -425,7 +434,7 @@ update { model, command } =
                                     Types.Object.Closed state
                               }
                             , Types.Command.resultWithMessage
-                                "抽斗の鍵が開きました。"
+                                "下段の抽斗の鍵が開きました。"
                             )
 
                         _ ->
@@ -444,7 +453,8 @@ update { model, command } =
 view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
-    , Images.Desk.view model.desk { x = 32, y = 230 }
-    , Images.LowerDrawer.view model.drawer2 { x = 382, y = 375 }
-    , Images.UpperDrawer.view model.drawer1 { x = 382, y = 290 }
+    , Images.Desk.view model.desk { x = 32, y = 220 }
+    , Images.Notebook.view model.notebook { x = 200, y = 225 }
+    , Images.LowerDrawer.view model.drawer2 { x = 382, y = 365 }
+    , Images.UpperDrawer.view model.drawer1 { x = 382, y = 280 }
     ]

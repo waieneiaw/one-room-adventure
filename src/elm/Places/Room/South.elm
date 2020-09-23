@@ -107,7 +107,9 @@ update { model, command } =
                 Types.Command.Verb.Look ->
                     if model.bronzeKey.status == Types.Object.Exist then
                         message
-                            "銅の色をした、何の変哲もない鍵です。"
+                            ("銅の色をした、何の変哲もない鍵です。"
+                                ++ "ソファに張り付いていますが、取れそうです。"
+                            )
 
                     else
                         noop
@@ -202,9 +204,9 @@ update { model, command } =
                         Types.Object.Opened _ ->
                             if model.goldKey.status == Types.Object.Exist then
                                 message
-                                    ("中には"
+                                    ("機械の代わりに"
                                         ++ model.goldKey.feature.name
-                                        ++ "が置かれています。"
+                                        ++ "が貼り付けられています。"
                                     )
 
                             else

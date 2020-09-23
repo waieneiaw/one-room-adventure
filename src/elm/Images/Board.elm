@@ -8,49 +8,32 @@ import Types.Point
 import Utils.Svg
 
 
-openedId : String
-openedId =
-    "opened-board"
+id : String
+id =
+    "board"
 
 
-closedId : String
-closedId =
-    "closed-board"
-
-
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Plain -> Types.Point.Point -> Svg msg
 view obj { x, y } =
-    case obj of
-        Types.Object.Opened _ ->
-            Svg.use
-                [ Svg.Attributes.xlinkHref ("#" ++ openedId)
-                , Svg.Attributes.x (String.fromInt x)
-                , Svg.Attributes.y (String.fromInt y)
-                , Svg.Attributes.fill Constants.Color.backgroundColor
-                , Svg.Attributes.fillOpacity "0"
-                , Svg.Attributes.stroke Constants.Color.mainColor
-                ]
-                []
+    if obj.status == Types.Object.Exist then
+        Svg.use
+            [ Svg.Attributes.xlinkHref ("#" ++ id)
+            , Svg.Attributes.x (String.fromInt x)
+            , Svg.Attributes.y (String.fromInt y)
+            , Svg.Attributes.fill Constants.Color.backgroundColor
+            , Svg.Attributes.stroke Constants.Color.mainColor
+            ]
+            []
 
-        _ ->
-            Svg.use
-                [ Svg.Attributes.xlinkHref ("#" ++ closedId)
-                , Svg.Attributes.x (String.fromInt x)
-                , Svg.Attributes.y (String.fromInt y)
-                , Svg.Attributes.fill Constants.Color.backgroundColor
-                , Svg.Attributes.stroke Constants.Color.mainColor
-                ]
-                []
+    else
+        Svg.svg [ Svg.Attributes.id id ] []
 
 
 defs : Svg msg
 defs =
     Svg.defs []
-        [ Svg.g [ Svg.Attributes.id openedId ]
-            [ defOpened
-            ]
-        , Svg.g [ Svg.Attributes.id closedId ]
-            [ defClosed
+        [ Svg.g [ Svg.Attributes.id id ]
+            [ defImpl
             ]
         ]
 
@@ -62,8 +45,8 @@ size =
     }
 
 
-defClosed : Svg msg
-defClosed =
+defImpl : Svg msg
+defImpl =
     Utils.Svg.createSvg
         { x = 0, y = 0 }
         size
@@ -93,22 +76,6 @@ defScrew point =
             [ Svg.Attributes.cx "6"
             , Svg.Attributes.cy "6"
             , Svg.Attributes.r "3"
-            ]
-            []
-        ]
-
-
-defOpened : Svg msg
-defOpened =
-    Utils.Svg.createSvg
-        { x = 0, y = 0 }
-        size
-        []
-        [ Svg.rect
-            [ Svg.Attributes.x "0"
-            , Svg.Attributes.y "0"
-            , Svg.Attributes.width (String.fromInt size.width)
-            , Svg.Attributes.height (String.fromInt size.height)
             ]
             []
         ]

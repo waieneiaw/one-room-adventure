@@ -14,10 +14,11 @@ import Images.Cushion
 import Images.Desk
 import Images.Door
 import Images.GoldKey
-import Images.HoleWithBoard
+import Images.Hole
 import Images.Key
 import Images.LowerDrawer
 import Images.Machine
+import Images.Notebook
 import Images.Paper
 import Images.Rack
 import Images.Safe
@@ -60,11 +61,12 @@ view toMsg content =
             , Images.Door.defs
             , Images.GoldKey.defs
             , Images.Key.defs
+            , Images.Notebook.defs
             , Images.LowerDrawer.defs
             , Images.Machine.defs
             , Images.Paper.defs
             , Images.Rack.defs
-            , Images.HoleWithBoard.defs
+            , Images.Hole.defs
             , Images.Safe.defs
             , Images.SafeDoor.defs
             , Images.Screwdriver.defs

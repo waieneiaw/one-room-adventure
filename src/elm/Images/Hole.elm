@@ -1,4 +1,4 @@
-module Images.HoleWithBoard exposing (defs, view)
+module Images.Hole exposing (defs, view)
 
 import Constants.Color
 import Svg exposing (Svg)
@@ -9,7 +9,7 @@ import Utils.Svg
 
 id : String
 id =
-    "hole-with-board"
+    "hole"
 
 
 view : Types.Point.Point -> Svg msg

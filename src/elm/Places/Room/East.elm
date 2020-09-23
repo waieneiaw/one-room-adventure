@@ -17,8 +17,7 @@ import Types.Object
 
 
 type alias Model =
-    { rack : Types.Object.Plain
-    , safe : Types.Object.Openable
+    { safe : Types.Object.Openable
     , box : Types.Object.Openable
     , silverKey : Types.Object.Plain
     , screwdriver : Types.Object.Plain
@@ -27,14 +26,7 @@ type alias Model =
 
 init : Model
 init =
-    { rack =
-        { status = Types.Object.Exist
-        , feature =
-            { type_ = Types.Item.None
-            , name = "棚（RACK）"
-            }
-        }
-    , safe =
+    { safe =
         Types.Object.Locked
             { feature =
                 { type_ = Types.Item.None
@@ -111,11 +103,16 @@ update { model, command } =
                 Types.Command.Verb.Look ->
                     case model.box of
                         Types.Object.Opened _ ->
-                            message
-                                ("銅色の箱です。中に。"
-                                    ++ model.silverKey.feature.name
-                                    ++ "があります。"
-                                )
+                            if model.silverKey.status == Types.Object.Exist then
+                                message
+                                    ("銅色の箱です。中に。"
+                                        ++ model.silverKey.feature.name
+                                        ++ "があります。"
+                                    )
+
+                            else
+                                message
+                                    "箱の中には何もありません。"
 
                         _ ->
                             message
@@ -151,27 +148,6 @@ update { model, command } =
                     noop
 
         ------------
-        -- Rack
-        ------------
-        -- Types.Command.Noun.Rack ->
-        --     case command.verb of
-        --         Types.Command.Verb.Look ->
-        --             let
-        --                 box =
-        --                     Types.Object.getOpenableState model.box
-        --                 safe =
-        --                     Types.Object.getOpenableState model.safe
-        --             in
-        --             message
-        --                 ("中に"
-        --                     ++ box.feature.name
-        --                     ++ "と"
-        --                     ++ safe.feature.name
-        --                     ++ "があります。"
-        --                 )
-        --         _ ->
-        --             noop
-        ------------
         -- Safe
         ------------
         Types.Command.Noun.Safe ->
@@ -202,9 +178,7 @@ update { model, command } =
                         Types.Object.Closed state ->
                             ( { model
                                 | safe =
-                                    Types.Object.Opened
-                                        { feature = state.feature
-                                        }
+                                    Types.Object.Opened state
                               }
                             , Types.Command.resultOk
                             )
@@ -217,9 +191,7 @@ update { model, command } =
                         Types.Object.Closed state ->
                             ( { model
                                 | safe =
-                                    Types.Object.Closed
-                                        { feature = state.feature
-                                        }
+                                    Types.Object.Closed state
                               }
                             , Types.Command.resultOk
                             )
@@ -237,9 +209,7 @@ update { model, command } =
                         Types.Object.Locked state ->
                             ( { model
                                 | safe =
-                                    Types.Object.Closed
-                                        { feature = state.feature
-                                        }
+                                    Types.Object.Closed state
                               }
                             , Types.Command.resultWithMessage "解錠に成功しました。"
                             )
@@ -297,7 +267,7 @@ update { model, command } =
                 Types.Command.Verb.Look ->
                     if model.silverKey.status == Types.Object.Exist then
                         message
-                            "銀色の鍵です。少し小さいです。"
+                            "銀色の鍵です。箱の奥に貼り付けられています。"
 
                     else
                         noop
@@ -329,9 +299,7 @@ update { model, command } =
                         Types.Object.Locked state ->
                             ( { model
                                 | box =
-                                    Types.Object.Closed
-                                        { feature = state.feature
-                                        }
+                                    Types.Object.Closed state
                                 , silverKey =
                                     { status = Types.Object.Exist
                                     , feature = model.silverKey.feature
@@ -358,7 +326,7 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Box.view model.box { x = 70, y = 280 }
-    , Images.SilverKey.view model.silverKey { x = 105, y = 380 }
+    , Images.SilverKey.view model.silverKey { x = 105, y = 360 }
     , Images.BoxDoor.view model.box { x = 70, y = 280 }
     , Images.Safe.view model.safe { x = 230, y = 280 }
     , Images.Screwdriver.view model.screwdriver { x = 280, y = 424 }

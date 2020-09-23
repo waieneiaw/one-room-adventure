@@ -241,7 +241,9 @@ execCommandWithoutPlace model command =
                     -- (3 * 1043) - 1111 = 2018
                     "「"
                         ++ "○ = 1、△ = 3"
-                        ++ "3 × ○✕□△ - ○○○○ = ????"
+                        ++ "」"
+                        ++ "「"
+                        ++ "3 × ◯✕□△ - ○○○○ = ????"
                         ++ "」"
                         ++ "と書かれています。"
             in
@@ -258,14 +260,17 @@ execCommandWithoutPlace model command =
         Types.Command.Noun.PaperOfMachineTips ->
             let
                 content =
-                    -- 現時点で「open」コマンドで開くことのできるオブジェクトの数
-                    -- それぞれに3をかけると算出される数が答え
-                    -- N = 0 : なし -> 0
-                    -- E = 2 : box、safe -> 6
-                    -- W = 3 : notebook、drawer x 2 -> 9
-                    -- S = 1 : machine -> 3
+                    -- 「close」コマンドが作動するオブジェクトの数
+                    -- N = 0 : door - DOOR -> 0
+                    -- E = 1 : box -> 1 x 3 -> 3
+                    -- W = 3 : notebook、drawer x 2 -> 3 x 3 -> 9
+                    -- S = 0 : なし -> 3 x 0 -> 0
+                    -- -> 0390 + 7105 = 7495
                     "「"
-                        ++ "OPENABLE -> NEWS -> × 3"
+                        ++ "closable -> NEWS = 0??0"
+                        ++ "」"
+                        ++ "「"
+                        ++ "NEWS × 3 + 7105"
                         ++ "」"
                         ++ "と書かれています。"
             in

@@ -15,6 +15,7 @@ type Noun
     | Drawer1
     | Drawer2
     | GoldKey
+    | Hole
     | Machine
     | MachineUnlockNumber
     | Notebook
@@ -64,10 +65,13 @@ fromString value =
         Just "goldkey" ->
             GoldKey
 
+        Just "hole" ->
+            Hole
+
         Just "machine" ->
             Machine
 
-        Just "0693" ->
+        Just "7495" ->
             MachineUnlockNumber
 
         Just "notebook" ->
