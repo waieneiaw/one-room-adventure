@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -18,7 +18,7 @@ closedId =
     "closed-safe"
 
 
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Openable -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     case obj of
         Types.Object.Opened _ ->
@@ -47,21 +47,21 @@ sideSize =
     20
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 170
     , height = 170
     }
 
 
-surfaceSize : Types.Point.Size
+surfaceSize : Types.Shape.Size
 surfaceSize =
     { width = size.width - sideSize
     , height = size.height - sideSize
     }
 
 
-doorSize : Types.Point.Size
+doorSize : Types.Shape.Size
 doorSize =
     { width = surfaceSize.width - 20
     , height = surfaceSize.height - 20
@@ -106,7 +106,7 @@ defOpened =
         ]
 
 
-defOpenedDoor : Types.Point.Point -> Svg msg
+defOpenedDoor : Types.Shape.Point -> Svg msg
 defOpenedDoor point =
     let
         size_ =
@@ -147,7 +147,7 @@ defOpenedDoor point =
         ]
 
 
-defDoor : Types.Point.Point -> Svg msg
+defDoor : Types.Shape.Point -> Svg msg
 defDoor point =
     let
         size_ =
@@ -173,7 +173,7 @@ defDoor point =
         ]
 
 
-defSurface : Types.Point.Point -> Svg msg
+defSurface : Types.Shape.Point -> Svg msg
 defSurface point =
     Utils.Svg.createSvg
         point
@@ -189,10 +189,10 @@ defSurface point =
         ]
 
 
-defSide : Types.Point.Point -> Svg msg
+defSide : Types.Shape.Point -> Svg msg
 defSide point =
     let
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = sideSize
             , height = size.height
@@ -219,10 +219,10 @@ defSide point =
         ]
 
 
-defTop : Types.Point.Point -> Svg msg
+defTop : Types.Shape.Point -> Svg msg
 defTop point =
     let
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = size.width
             , height = sideSize

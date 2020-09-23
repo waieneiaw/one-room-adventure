@@ -5,7 +5,7 @@ import Constants.Wall
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -14,7 +14,7 @@ id =
     "desk"
 
 
-view : Types.Object.Plain -> Types.Point.Point -> Svg msg
+view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     if obj.status == Types.Object.Exist then
         Svg.use
@@ -30,9 +30,9 @@ view obj { x, y } =
         Svg.svg [ Svg.Attributes.id id ] []
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
-    { width = Constants.Wall.width
+    { width = Constants.Wall.size.width
     , height = 300
     }
 
@@ -59,12 +59,12 @@ defImpl =
         ]
 
 
-defSurface : Types.Point.Point -> Svg msg
+defSurface : Types.Shape.Point -> Svg msg
 defSurface point =
     let
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
-            { width = Constants.Wall.innerWidth + 64
+            { width = Constants.Wall.innerSize.width + 64
             , height = 60
             }
     in
@@ -99,7 +99,7 @@ defSurface point =
         ]
 
 
-defLeftLeg : Types.Point.Point -> Svg msg
+defLeftLeg : Types.Shape.Point -> Svg msg
 defLeftLeg point =
     let
         legWidth =
@@ -108,7 +108,7 @@ defLeftLeg point =
         legDepth =
             30
 
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = 60
             , height = 230
@@ -142,10 +142,10 @@ defLeftLeg point =
         ]
 
 
-defRightLeg : Types.Point.Point -> Svg msg
+defRightLeg : Types.Shape.Point -> Svg msg
 defRightLeg point =
     let
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = 30
             , height = 230
@@ -165,19 +165,19 @@ defRightLeg point =
         ]
 
 
-defCabinet : Types.Point.Point -> Svg msg
+defCabinet : Types.Shape.Point -> Svg msg
 defCabinet point =
     let
         surfaceX =
             20
 
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = 170
             , height = 170
             }
 
-        surfaceSize_ : Types.Point.Size
+        surfaceSize_ : Types.Shape.Size
         surfaceSize_ =
             { width = 150
             , height = 85

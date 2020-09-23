@@ -1,4 +1,4 @@
-module Types.Point exposing (Point, Size)
+module Types.Shape exposing (Point, Size)
 
 
 type alias Point =

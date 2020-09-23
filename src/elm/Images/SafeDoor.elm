@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -18,7 +18,7 @@ closedId =
     "closed-safe-door"
 
 
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Openable -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     case obj of
         Types.Object.Opened _ ->
@@ -47,14 +47,14 @@ sideSize =
     20
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 170
     , height = 170
     }
 
 
-surfaceSize : Types.Point.Size
+surfaceSize : Types.Shape.Size
 surfaceSize =
     { width = size.width - sideSize
     , height = size.height - sideSize
@@ -92,10 +92,10 @@ defOpened =
         []
 
 
-defDoor : Types.Point.Point -> Svg msg
+defDoor : Types.Shape.Point -> Svg msg
 defDoor point =
     let
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = surfaceSize.width - 20
             , height = surfaceSize.height - 20

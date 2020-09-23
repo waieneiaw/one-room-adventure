@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -18,7 +18,7 @@ closedId =
     "closed-box-door"
 
 
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Openable -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     case obj of
         Types.Object.Opened _ ->
@@ -47,14 +47,14 @@ sideSize =
     20
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 170
     , height = 170
     }
 
 
-surfaceSize : Types.Point.Size
+surfaceSize : Types.Shape.Size
 surfaceSize =
     { width = size.width - sideSize
     , height = size.height - sideSize
@@ -92,14 +92,14 @@ defClosed =
         ]
 
 
-doorSize : Types.Point.Size
+doorSize : Types.Shape.Size
 doorSize =
     { width = toFloat (surfaceSize.width - 30) / 2 |> floor
     , height = surfaceSize.height - 20
     }
 
 
-defDoor : Types.Point.Point -> Svg msg
+defDoor : Types.Shape.Point -> Svg msg
 defDoor point =
     let
         size_ =
@@ -119,7 +119,7 @@ defDoor point =
         ]
 
 
-defDoorWithKey : Types.Point.Point -> Svg msg
+defDoorWithKey : Types.Shape.Point -> Svg msg
 defDoorWithKey point =
     let
         size_ =
@@ -134,10 +134,10 @@ defDoorWithKey point =
         ]
 
 
-defKeyhole : Types.Point.Point -> Svg msg
+defKeyhole : Types.Shape.Point -> Svg msg
 defKeyhole point =
     let
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = 24
             , height = 24

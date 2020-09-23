@@ -5,7 +5,7 @@ import Constants.Wall
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 
 
 id : String
@@ -13,7 +13,7 @@ id =
     "sofa"
 
 
-view : Types.Object.Plain -> Types.Point.Point -> Svg msg
+view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     if obj.status == Types.Object.Exist then
         Svg.use
@@ -42,7 +42,7 @@ defImpl : Svg msg
 defImpl =
     let
         strWidth =
-            String.fromInt Constants.Wall.width
+            String.fromInt Constants.Wall.size.width
 
         strHeight =
             String.fromInt 400
@@ -62,11 +62,11 @@ defImpl =
         ]
 
 
-defBackrest : Types.Point.Point -> Svg msg
+defBackrest : Types.Shape.Point -> Svg msg
 defBackrest point =
     let
         strBackrestWidth =
-            String.fromInt (Constants.Wall.innerWidth - 32)
+            String.fromInt (Constants.Wall.innerSize.width - 32)
 
         strBackrestHeight =
             String.fromInt 130
@@ -94,7 +94,7 @@ defBackrest point =
         ]
 
 
-defLeftArmrest : Types.Point.Point -> Svg msg
+defLeftArmrest : Types.Shape.Point -> Svg msg
 defLeftArmrest point =
     Svg.svg
         [ Svg.Attributes.version "1.1"
@@ -146,7 +146,7 @@ defLeftArmrest point =
         ]
 
 
-defRightArmrest : Types.Point.Point -> Svg msg
+defRightArmrest : Types.Shape.Point -> Svg msg
 defRightArmrest point =
     Svg.svg
         [ Svg.Attributes.version "1.1"
@@ -198,11 +198,11 @@ defRightArmrest point =
         ]
 
 
-defSeat : Types.Point.Point -> Svg msg
+defSeat : Types.Shape.Point -> Svg msg
 defSeat point =
     let
         strBackrestWidth =
-            String.fromInt (Constants.Wall.innerWidth + 64)
+            String.fromInt (Constants.Wall.innerSize.width + 64)
 
         strBackrestHeight =
             String.fromInt 60
@@ -240,7 +240,7 @@ defSeat point =
         ]
 
 
-defLeg : Types.Point.Point -> Svg msg
+defLeg : Types.Shape.Point -> Svg msg
 defLeg point =
     Svg.svg
         [ Svg.Attributes.version "1.1"

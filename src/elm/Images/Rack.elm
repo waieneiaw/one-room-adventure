@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -13,7 +13,7 @@ id =
     "rack"
 
 
-view : Types.Object.Plain -> Types.Point.Point -> Svg msg
+view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     if obj.status == Types.Object.Exist then
         Svg.use
@@ -29,14 +29,14 @@ view obj { x, y } =
         Svg.svg [ Svg.Attributes.id id ] []
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 480
     , height = 300
     }
 
 
-surfaceSize : Types.Point.Size
+surfaceSize : Types.Shape.Size
 surfaceSize =
     { width = 150
     , height = 85
@@ -62,7 +62,7 @@ defImpl =
         ]
 
 
-defSurface : Types.Point.Point -> Svg msg
+defSurface : Types.Shape.Point -> Svg msg
 defSurface point =
     Utils.Svg.createSvg
         point

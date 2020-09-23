@@ -4,10 +4,10 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 
 
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Openable -> Types.Shape.Point -> Svg msg
 view door { x, y } =
     let
         opened =

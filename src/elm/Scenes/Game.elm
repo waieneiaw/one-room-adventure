@@ -380,9 +380,9 @@ viewWindow model =
                 [ Html.Attributes.class "ml_game_view" ]
                 [ Svg.svg
                     [ Svg.Attributes.width
-                        (String.fromInt Constants.Basic.gameViewWidth)
+                        (String.fromInt Constants.Basic.gameView.width)
                     , Svg.Attributes.height
-                        (String.fromInt Constants.Basic.gameViewHeight)
+                        (String.fromInt Constants.Basic.gameView.height)
                     ]
                     (Places.Room.view model.direction placeModel)
                 ]

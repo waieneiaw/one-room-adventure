@@ -1,14 +1,6 @@
 module Constants.Basic exposing (..)
 
-
-gameViewWidth : Int
-gameViewWidth =
-    640
-
-
-gameViewHeight : Int
-gameViewHeight =
-    480
+import Types.Shape
 
 
 wallSideWidth : Int
@@ -19,3 +11,10 @@ wallSideWidth =
 wallSideHeight : Int
 wallSideHeight =
     64
+
+
+gameView : Types.Shape.Size
+gameView =
+    { width = 640
+    , height = 480
+    }

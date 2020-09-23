@@ -3,7 +3,7 @@ module Images.Hole exposing (defs, view)
 import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -12,7 +12,7 @@ id =
     "hole"
 
 
-view : Types.Point.Point -> Svg msg
+view : Types.Shape.Point -> Svg msg
 view { x, y } =
     Svg.use
         [ Svg.Attributes.xlinkHref ("#" ++ id)
@@ -33,7 +33,7 @@ defs =
         ]
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 120
     , height = 120
@@ -57,7 +57,7 @@ defImpl =
         ]
 
 
-defHole : Types.Point.Point -> Svg msg
+defHole : Types.Shape.Point -> Svg msg
 defHole point =
     let
         sideSize =

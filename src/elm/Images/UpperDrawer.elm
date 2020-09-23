@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -18,7 +18,7 @@ closedId =
     "closed-upper-drawer"
 
 
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Openable -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     case obj of
         Types.Object.Opened _ ->
@@ -42,14 +42,14 @@ view obj { x, y } =
                 []
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 180
     , height = 105
     }
 
 
-surfaceSize : Types.Point.Size
+surfaceSize : Types.Shape.Size
 surfaceSize =
     { width = 150
     , height = 85
@@ -68,7 +68,7 @@ defs =
         ]
 
 
-defSurface : Types.Point.Point -> Svg msg
+defSurface : Types.Shape.Point -> Svg msg
 defSurface point =
     Utils.Svg.createSvg
         point
@@ -113,10 +113,10 @@ defOpened =
         ]
 
 
-defSide : Types.Point.Point -> Svg msg
+defSide : Types.Shape.Point -> Svg msg
 defSide point =
     let
-        size_ : Types.Point.Size
+        size_ : Types.Shape.Size
         size_ =
             { width = 20
             , height = size.height

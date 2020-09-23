@@ -3,10 +3,10 @@ module Utils.Svg exposing (createPolygonLine, createSvg, createViewBox)
 import Html
 import Svg exposing (Svg)
 import Svg.Attributes
-import Types.Point
+import Types.Shape
 
 
-createPolygonPoint : Types.Point.Point -> String
+createPolygonPoint : Types.Shape.Point -> String
 createPolygonPoint point =
     String.fromInt point.x
         ++ ","
@@ -14,15 +14,15 @@ createPolygonPoint point =
         ++ " "
 
 
-createPolygonLine : Types.Point.Point -> Types.Point.Point -> String
+createPolygonLine : Types.Shape.Point -> Types.Shape.Point -> String
 createPolygonLine start end =
     createPolygonPoint { x = start.x, y = start.y }
         ++ createPolygonPoint { x = end.x, y = end.y }
 
 
 createViewBox :
-    Types.Point.Point
-    -> Types.Point.Size
+    Types.Shape.Point
+    -> Types.Shape.Size
     -> Svg.Attribute msg
 createViewBox point size =
     Svg.Attributes.viewBox
@@ -38,8 +38,8 @@ createViewBox point size =
 
 
 createSvg :
-    Types.Point.Point
-    -> Types.Point.Size
+    Types.Shape.Point
+    -> Types.Shape.Size
     -> List (Html.Attribute msg)
     -> List (Svg msg)
     -> Html.Html msg

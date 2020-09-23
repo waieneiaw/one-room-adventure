@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 
 
 openedId : String
@@ -17,7 +17,7 @@ closedId =
     "closed-machine"
 
 
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Openable -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     case obj of
         Types.Object.Opened _ ->
@@ -82,7 +82,7 @@ defClosed =
         ]
 
 
-defCounter : Types.Point.Point -> Svg msg
+defCounter : Types.Shape.Point -> Svg msg
 defCounter point =
     Svg.svg
         [ Svg.Attributes.version "1.1"

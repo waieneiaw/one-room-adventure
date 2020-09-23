@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -18,7 +18,7 @@ closedId =
     "closed-notebook"
 
 
-view : Types.Object.Openable -> Types.Point.Point -> Svg msg
+view : Types.Object.Openable -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     case obj of
         Types.Object.Opened _ ->
@@ -42,14 +42,14 @@ view obj { x, y } =
                 []
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 80
     , height = 20
     }
 
 
-pageSize : Types.Point.Size
+pageSize : Types.Shape.Size
 pageSize =
     { width = 40
     , height = 20

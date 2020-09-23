@@ -4,7 +4,7 @@ import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
 import Utils.Svg
 
 
@@ -13,7 +13,7 @@ id =
     "paper"
 
 
-view : Types.Object.Plain -> Types.Point.Point -> Svg msg
+view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     if obj.status == Types.Object.Exist then
         Svg.use
@@ -38,7 +38,7 @@ defs =
         ]
 
 
-size : Types.Point.Size
+size : Types.Shape.Size
 size =
     { width = 40
     , height = 20
