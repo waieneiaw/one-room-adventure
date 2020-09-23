@@ -172,10 +172,6 @@ update { items, model, command } =
                 Types.Command.Verb.Look ->
                     case model.board of
                         Types.Object.Opened _ ->
-                            let
-                                _ =
-                                    Debug.log "paper2" model.paper2.status
-                            in
                             if model.paper2.status == Types.Object.Exist then
                                 message
                                     "何か書かれています。"

@@ -184,60 +184,6 @@ defDoor point =
         ]
 
 
-defDoorWithKey : Types.Point.Point -> Svg msg
-defDoorWithKey point =
-    let
-        size_ =
-            doorSize
-    in
-    Utils.Svg.createSvg
-        point
-        size_
-        []
-        [ defDoor { x = 0, y = 0 }
-        , defKeyhole { x = 30, y = 100 }
-        ]
-
-
-defKeyhole : Types.Point.Point -> Svg msg
-defKeyhole point =
-    let
-        size_ : Types.Point.Size
-        size_ =
-            { width = 24
-            , height = 24
-            }
-
-        cx =
-            toFloat size_.width
-                / 2
-                |> String.fromFloat
-
-        cy =
-            toFloat size_.width
-                / 2
-                |> String.fromFloat
-    in
-    Utils.Svg.createSvg
-        point
-        size_
-        []
-        [ Svg.circle
-            [ Svg.Attributes.cx cx
-            , Svg.Attributes.cy cy
-            , Svg.Attributes.r "8"
-            ]
-            []
-        , Svg.line
-            [ Svg.Attributes.x1 "12"
-            , Svg.Attributes.y1 "8"
-            , Svg.Attributes.x2 "12"
-            , Svg.Attributes.y2 "16"
-            ]
-            []
-        ]
-
-
 defSide : Types.Point.Point -> Svg msg
 defSide point =
     let

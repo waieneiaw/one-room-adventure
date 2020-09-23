@@ -1,7 +1,6 @@
 module Images.BoxDoor exposing (defs, view)
 
 import Constants.Color
-import String exposing (toInt)
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
