@@ -15,7 +15,6 @@ import Images.Desk
 import Images.Door
 import Images.GoldKey
 import Images.Hole
-import Images.Key
 import Images.LowerDrawer
 import Images.Machine
 import Images.Notebook
@@ -60,7 +59,6 @@ view toMsg content =
             , Images.Desk.defs
             , Images.Door.defs
             , Images.GoldKey.defs
-            , Images.Key.defs
             , Images.Notebook.defs
             , Images.LowerDrawer.defs
             , Images.Machine.defs
