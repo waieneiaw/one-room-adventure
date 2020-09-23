@@ -8,6 +8,8 @@ import Html exposing (Html)
 import Html.Attributes
 import Images.Board
 import Images.Box
+import Images.BoxDoor
+import Images.BronzeKey
 import Images.Cushion
 import Images.Desk
 import Images.Door
@@ -18,6 +20,8 @@ import Images.Machine
 import Images.Paper
 import Images.Rack
 import Images.Safe
+import Images.SafeDoor
+import Images.Screwdriver
 import Images.Sofa
 import Images.UpperDrawer
 import Images.Wall
@@ -48,6 +52,8 @@ view toMsg content =
             [ Images.Wall.defs
             , Images.Board.defs
             , Images.Box.defs
+            , Images.BoxDoor.defs
+            , Images.BronzeKey.defs
             , Images.Cushion.defs
             , Images.Desk.defs
             , Images.Door.defs
@@ -58,6 +64,8 @@ view toMsg content =
             , Images.Paper.defs
             , Images.Rack.defs
             , Images.Safe.defs
+            , Images.SafeDoor.defs
+            , Images.Screwdriver.defs
             , Images.Sofa.defs
             , Images.UpperDrawer.defs
             ]

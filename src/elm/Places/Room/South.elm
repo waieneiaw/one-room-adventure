@@ -1,5 +1,6 @@
 module Places.Room.South exposing (Model, init, update, view)
 
+import Images.BronzeKey
 import Images.Cushion
 import Images.GoldKey
 import Images.Machine
@@ -138,16 +139,8 @@ update { model, command } =
                         message
                             "妙に角張っていますが、触ってみると柔らかいです。"
 
-                    else if model.bronzeKey.status == Types.Object.Exist then
-                        message
-                            ("中身が出ています。"
-                                ++ model.bronzeKey.feature.name
-                                ++ "があります。"
-                            )
-
                     else
-                        message
-                            "中身が出ています。"
+                        noop
 
                 Types.Command.Verb.Take ->
                     if model.cushion.status == Types.Object.Exist then
@@ -264,11 +257,23 @@ update { model, command } =
         Types.Command.Noun.Sofa ->
             case command.verb of
                 Types.Command.Verb.Look ->
-                    message
-                        ("革製の高級そうなソファです。"
-                            ++ model.cushion.feature.name
-                            ++ "が置かれています。"
-                        )
+                    if model.bronzeKey.status == Types.Object.Exist then
+                        message
+                            ("ソファの背もたれに"
+                                ++ model.bronzeKey.feature.name
+                                ++ "があります。"
+                            )
+
+                    else if model.cushion.status == Types.Object.Exist then
+                        message
+                            ("革製の高級そうなソファです。"
+                                ++ model.cushion.feature.name
+                                ++ "が置かれています。"
+                            )
+
+                    else
+                        message
+                            "革製の高級そうなソファです。"
 
                 _ ->
                     noop
@@ -291,7 +296,9 @@ update { model, command } =
                                 }
                           }
                         , Types.Command.resultWithMessage
-                            "クッションを切りました。"
+                            ("クッションを切ってソファから剥がしてみました。"
+                                ++ "ソファに何かがくっついています。"
+                            )
                         )
 
                     else
@@ -311,6 +318,7 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Sofa.view model.sofa { x = 0, y = 200 }
+    , Images.BronzeKey.view model.bronzeKey { x = 440, y = 310 }
     , Images.Cushion.view model.cushion { x = 400, y = 270 }
     , Images.GoldKey.view model.goldKey { x = 305, y = 145 }
     , Images.Machine.view model.machine { x = 260, y = 140 }

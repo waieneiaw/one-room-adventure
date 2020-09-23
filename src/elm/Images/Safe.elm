@@ -61,6 +61,13 @@ surfaceSize =
     }
 
 
+doorSize : Types.Point.Size
+doorSize =
+    { width = surfaceSize.width - 20
+    , height = surfaceSize.height - 20
+    }
+
+
 defs : Svg msg
 defs =
     Svg.defs []
@@ -70,6 +77,99 @@ defs =
         , Svg.g [ Svg.Attributes.id closedId ]
             [ defClosed
             ]
+        ]
+
+
+defClosed : Svg msg
+defClosed =
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
+        [ defSide { x = surfaceSize.width, y = 0 }
+        , defTop { x = 0, y = 0 }
+        , defSurface { x = 0, y = sideSize }
+        , defDoor { x = 10, y = sideSize + 10 }
+        ]
+
+
+defOpened : Svg msg
+defOpened =
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
+        [ defSide { x = surfaceSize.width, y = 0 }
+        , defTop { x = 0, y = 0 }
+        , defSurface { x = 0, y = sideSize }
+        , defOpenedDoor { x = 10, y = sideSize + 10 }
+        ]
+
+
+defOpenedDoor : Types.Point.Point -> Svg msg
+defOpenedDoor point =
+    let
+        size_ =
+            doorSize
+    in
+    Utils.Svg.createSvg
+        point
+        size_
+        []
+        [ Svg.rect
+            [ Svg.Attributes.x "0"
+            , Svg.Attributes.y "0"
+            , Svg.Attributes.width (String.fromInt size_.width)
+            , Svg.Attributes.height (String.fromInt size_.height)
+            ]
+            []
+        , Svg.polygon
+            [ Svg.Attributes.points
+                (Utils.Svg.createPolygonLine
+                    { x = sideSize, y = 0 }
+                    { x = 0, y = 0 }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 0, y = size_.height }
+                        { x = sideSize, y = size_.height - sideSize }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = sideSize, y = size_.height - sideSize }
+                        { x = sideSize, y = 0 }
+                )
+            ]
+            []
+        , Svg.line
+            [ Svg.Attributes.x1 (String.fromInt sideSize)
+            , Svg.Attributes.y1 (String.fromInt (size_.height - sideSize))
+            , Svg.Attributes.x2 (String.fromInt size_.width)
+            , Svg.Attributes.y2 (String.fromInt (size_.height - sideSize))
+            ]
+            []
+        ]
+
+
+defDoor : Types.Point.Point -> Svg msg
+defDoor point =
+    let
+        size_ =
+            doorSize
+    in
+    Utils.Svg.createSvg
+        point
+        surfaceSize
+        []
+        [ Svg.rect
+            [ Svg.Attributes.x "0"
+            , Svg.Attributes.y "0"
+            , Svg.Attributes.width (String.fromInt size_.width)
+            , Svg.Attributes.height (String.fromInt size_.height)
+            ]
+            []
+        , Svg.circle
+            [ Svg.Attributes.cx "20"
+            , Svg.Attributes.cy "70"
+            , Svg.Attributes.r "10"
+            ]
+            []
         ]
 
 
@@ -86,44 +186,6 @@ defSurface point =
             , Svg.Attributes.height (String.fromInt surfaceSize.height)
             ]
             []
-        , Svg.rect
-            [ Svg.Attributes.x "10"
-            , Svg.Attributes.y "10"
-            , Svg.Attributes.width (String.fromInt (surfaceSize.width - 20))
-            , Svg.Attributes.height (String.fromInt (surfaceSize.height - 20))
-            ]
-            []
-        , Svg.circle
-            [ Svg.Attributes.cx "30"
-            , Svg.Attributes.cy "80"
-            , Svg.Attributes.r "10"
-            ]
-            []
-        ]
-
-
-defClosed : Svg msg
-defClosed =
-    Utils.Svg.createSvg
-        { x = 0, y = 0 }
-        size
-        []
-        [ defSide { x = surfaceSize.width, y = 0 }
-        , defTop { x = 0, y = 0 }
-        , defSurface { x = 0, y = sideSize }
-        ]
-
-
-defOpened : Svg msg
-defOpened =
-    Utils.Svg.createSvg
-        { x = 0, y = 0 }
-        size
-        []
-        [ defSide { x = surfaceSize.width, y = 0 }
-        , defTop { x = 0, y = 0 }
-
-        -- , defSurface { x = 0, y = 20 }
         ]
 
 

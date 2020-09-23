@@ -1,7 +1,11 @@
 module Places.Room.East exposing (Model, init, update, view)
 
 import Images.Box
+import Images.BoxDoor
 import Images.Safe
+import Images.SafeDoor
+import Images.Screwdriver
+import Images.SilverKey
 import Images.Wall
 import Svg exposing (Svg)
 import Types.Argument
@@ -122,9 +126,7 @@ update { model, command } =
                         Types.Object.Closed state ->
                             ( { model
                                 | box =
-                                    Types.Object.Opened
-                                        { feature = state.feature
-                                        }
+                                    Types.Object.Opened state
                               }
                             , Types.Command.resultOk
                             )
@@ -137,9 +139,7 @@ update { model, command } =
                         Types.Object.Opened state ->
                             ( { model
                                 | box =
-                                    Types.Object.Closed
-                                        { feature = state.feature
-                                        }
+                                    Types.Object.Closed state
                               }
                             , Types.Command.resultOk
                             )
@@ -358,5 +358,9 @@ view : Model -> List (Svg msg)
 view model =
     [ Images.Wall.view
     , Images.Box.view model.box { x = 70, y = 280 }
+    , Images.SilverKey.view model.silverKey { x = 105, y = 380 }
+    , Images.BoxDoor.view model.box { x = 70, y = 280 }
     , Images.Safe.view model.safe { x = 230, y = 280 }
+    , Images.Screwdriver.view model.screwdriver { x = 280, y = 424 }
+    , Images.SafeDoor.view model.safe { x = 230, y = 280 }
     ]
