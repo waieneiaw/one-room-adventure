@@ -1,10 +1,11 @@
 module Types.Command exposing
     ( Command
     , Result
-    , noResults
     , parse
+    , resultNg
+    , resultOk
     , resultWithItem
-    , resultWithoutItem
+    , resultWithMessage
     )
 
 import List.Extra as List
@@ -68,16 +69,23 @@ type alias Result =
 
 {-| コマンド実行の結果、何も起こらない場合。
 -}
-noResults : Result
-noResults =
+resultNg : Result
+resultNg =
     { message = "NG!", item = Nothing }
 
 
 {-| コマンド実行の結果、messageを返す場合。
 -}
-resultWithoutItem : String -> Result
-resultWithoutItem text =
+resultWithMessage : String -> Result
+resultWithMessage text =
     { message = text, item = Nothing }
+
+
+{-| コマンド実行の結果、OKと返す場合。
+-}
+resultOk : Result
+resultOk =
+    { message = "OK!", item = Nothing }
 
 
 {-| コマンド実行の結果、messageとitemを返す場合。

@@ -1,18 +1,19 @@
-module Images.Key exposing (defs, view)
+module Images.SilverKey exposing (defs, view)
 
 import Constants.Color
 import Svg exposing (Svg)
 import Svg.Attributes
 import Types.Object
-import Types.Point
+import Types.Shape
+import Utils.Svg
 
 
 id : String
 id =
-    "key"
+    "bronzekey"
 
 
-view : Types.Object.Plain -> Types.Point.Point -> Svg msg
+view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
 view obj { x, y } =
     if obj.status == Types.Object.Exist then
         Svg.use
@@ -37,14 +38,19 @@ defs =
         ]
 
 
+size : Types.Shape.Size
+size =
+    { width = 32
+    , height = 32
+    }
+
+
 defImpl : Svg msg
 defImpl =
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.width "32"
-        , Svg.Attributes.height "32"
-        , Svg.Attributes.viewBox "0 0 32 32"
-        ]
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
         [ Svg.rect
             [ Svg.Attributes.x "4"
             , Svg.Attributes.y "0"

@@ -1,4 +1,4 @@
-module Images.Paper exposing (defs, view)
+module Images.BronzeKey exposing (defs, view)
 
 import Constants.Color
 import Svg exposing (Svg)
@@ -10,7 +10,7 @@ import Utils.Svg
 
 id : String
 id =
-    "paper"
+    "bronzekey"
 
 
 view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
@@ -40,14 +40,9 @@ defs =
 
 size : Types.Shape.Size
 size =
-    { width = 40
-    , height = 20
+    { width = 32
+    , height = 32
     }
-
-
-depth : Int
-depth =
-    6
 
 
 defImpl : Svg msg
@@ -56,18 +51,30 @@ defImpl =
         { x = 0, y = 0 }
         size
         []
-        [ Svg.polygon
+        [ Svg.rect
+            [ Svg.Attributes.x "4"
+            , Svg.Attributes.y "0"
+            , Svg.Attributes.width "20"
+            , Svg.Attributes.height "10"
+            ]
+            []
+        , Svg.rect
+            [ Svg.Attributes.x "10"
+            , Svg.Attributes.y "4"
+            , Svg.Attributes.width "8"
+            , Svg.Attributes.height "2"
+            ]
+            []
+        , Svg.polygon
             [ Svg.Attributes.points
-                (Utils.Svg.createPolygonLine
-                    { x = depth, y = 0 }
-                    { x = 0, y = size.height }
-                    ++ Utils.Svg.createPolygonLine
-                        { x = 0, y = size.height }
-                        { x = size.width, y = size.height }
-                    ++ Utils.Svg.createPolygonLine
-                        { x = size.width, y = size.height }
-                        { x = size.width - depth, y = 0 }
-                )
+                "10,10 10,26 14,32 18,26 18,10"
+            ]
+            []
+        , Svg.line
+            [ Svg.Attributes.x1 "14"
+            , Svg.Attributes.y1 "14"
+            , Svg.Attributes.x2 "14"
+            , Svg.Attributes.y2 "30"
             ]
             []
         ]

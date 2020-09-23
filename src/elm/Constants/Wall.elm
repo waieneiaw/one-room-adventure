@@ -1,74 +1,71 @@
 module Constants.Wall exposing (..)
 
 import Constants.Basic
-import Types.Point exposing (Point)
+import Types.Shape
 
 
-width : Int
-width =
-    Constants.Basic.gameViewWidth
+size : Types.Shape.Size
+size =
+    Constants.Basic.gameView
 
 
-height : Int
-height =
-    Constants.Basic.gameViewHeight
+sideSize : Types.Shape.Size
+sideSize =
+    { width = 64
+    , height = 64
+    }
 
 
-sideWidth : Int
-sideWidth =
-    64
-
-
-sideHeight : Int
-sideHeight =
-    64
-
-
-outerTopLeft : Point
+outerTopLeft : Types.Shape.Point
 outerTopLeft =
     { x = 0, y = 0 }
 
 
-outerTopRight : Point
+outerTopRight : Types.Shape.Point
 outerTopRight =
-    { x = width, y = 0 }
+    { x = size.width, y = 0 }
 
 
-outerBottomLeft : Point
+outerBottomLeft : Types.Shape.Point
 outerBottomLeft =
-    { x = 0, y = height }
+    { x = 0, y = size.height }
 
 
-outerBottomRight : Point
+outerBottomRight : Types.Shape.Point
 outerBottomRight =
-    { x = width, y = height }
+    { x = size.width, y = size.height }
 
 
-innerWidth : Int
-innerWidth =
-    width - (sideWidth * 2)
+innerSize : Types.Shape.Size
+innerSize =
+    { width = size.width - (sideSize.width * 2)
+    , height = size.height - (sideSize.height * 2)
+    }
 
 
-innerHeight : Int
-innerHeight =
-    height - (sideHeight * 2)
-
-
-innerTopLeft : Point
+innerTopLeft : Types.Shape.Point
 innerTopLeft =
-    { x = outerTopLeft.x + sideWidth, y = outerTopLeft.y + sideHeight }
+    { x = outerTopLeft.x + sideSize.width
+    , y = outerTopLeft.y + sideSize.height
+    }
 
 
-innerTopRight : Point
+innerTopRight : Types.Shape.Point
 innerTopRight =
-    { x = outerTopRight.x - sideWidth, y = outerTopRight.y + sideHeight }
+    { x = outerTopRight.x - sideSize.width
+    , y = outerTopRight.y + sideSize.height
+    }
 
 
-innerBottomLeft : Point
+innerBottomLeft : Types.Shape.Point
 innerBottomLeft =
-    { x = outerBottomLeft.x + sideWidth, y = outerBottomLeft.y - sideHeight }
+    { x = outerBottomLeft.x + sideSize.width
+    , y = outerBottomLeft.y - sideSize.height
+    }
 
 
-innerBottomRight : Point
+innerBottomRight : Types.Shape.Point
 innerBottomRight =
-    { x = outerBottomRight.x - sideWidth, y = outerBottomRight.y - sideHeight }
+    { x = outerBottomRight.x - sideSize.width
+    , y = outerBottomRight.y - sideSize.height
+    }

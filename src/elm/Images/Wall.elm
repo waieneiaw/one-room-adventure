@@ -35,22 +35,22 @@ defImpl : Svg msg
 defImpl =
     let
         strSideWidth =
-            String.fromInt Constants.Wall.sideWidth
+            String.fromInt Constants.Wall.sideSize.width
 
         strSideHeight =
-            String.fromInt Constants.Wall.sideHeight
+            String.fromInt Constants.Wall.sideSize.height
 
         strWidth =
-            String.fromInt Constants.Wall.width
+            String.fromInt Constants.Wall.size.width
 
         strHeight =
-            String.fromInt Constants.Wall.height
+            String.fromInt Constants.Wall.size.height
 
         strInnerWidth =
-            String.fromInt Constants.Wall.innerWidth
+            String.fromInt Constants.Wall.innerSize.width
 
         strInnerHeight =
-            String.fromInt Constants.Wall.innerHeight
+            String.fromInt Constants.Wall.innerSize.height
     in
     Svg.svg
         [ Svg.Attributes.version "1.1"

@@ -4,16 +4,9 @@ import Constants.Color
 import Constants.Wall
 import Svg exposing (Svg)
 import Svg.Attributes
-
-
-view : Svg msg
-view =
-    Svg.use
-        [ Svg.Attributes.xlinkHref ("#" ++ id)
-        , Svg.Attributes.x "0"
-        , Svg.Attributes.y "0"
-        ]
-        []
+import Types.Object
+import Types.Shape
+import Utils.Svg
 
 
 id : String
@@ -21,24 +14,27 @@ id =
     "desk"
 
 
-backWidth : Int
-backWidth =
-    400
+view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
+view obj { x, y } =
+    if obj.status == Types.Object.Exist then
+        Svg.use
+            [ Svg.Attributes.xlinkHref ("#" ++ id)
+            , Svg.Attributes.x (String.fromInt x)
+            , Svg.Attributes.y (String.fromInt y)
+            , Svg.Attributes.fill Constants.Color.backgroundColor
+            , Svg.Attributes.stroke Constants.Color.mainColor
+            ]
+            []
+
+    else
+        Svg.svg [ Svg.Attributes.id id ] []
 
 
-frontWidth : Int
-frontWidth =
-    500
-
-
-depth : Int
-depth =
-    100
-
-
-underEdgeWidth : Int
-underEdgeWidth =
-    10
+size : Types.Shape.Size
+size =
+    { width = Constants.Wall.size.width
+    , height = 300
+    }
 
 
 defs : Svg msg
@@ -52,78 +48,164 @@ defs =
 
 defImpl : Svg msg
 defImpl =
-    let
-        strSideWidth =
-            String.fromInt Constants.Wall.sideWidth
-
-        strSideHeight =
-            String.fromInt Constants.Wall.sideHeight
-
-        strWidth =
-            String.fromInt Constants.Wall.width
-
-        strHeight =
-            String.fromInt Constants.Wall.height
-
-        strInnerWidth =
-            String.fromInt Constants.Wall.innerWidth
-
-        strInnerHeight =
-            String.fromInt Constants.Wall.innerHeight
-    in
-    Svg.svg
-        [ Svg.Attributes.version "1.1"
-        , Svg.Attributes.width strWidth
-        , Svg.Attributes.height strHeight
-        , Svg.Attributes.viewBox ("0 0 " ++ strWidth ++ " " ++ strHeight)
+    Utils.Svg.createSvg
+        { x = 0, y = 0 }
+        size
+        []
+        [ defLeftLeg { x = 50, y = 0 }
+        , defRightLeg { x = 500, y = 0 }
+        , defCabinet { x = 330, y = 60 }
+        , defSurface { x = 0, y = 0 }
         ]
-        [ Svg.polyline
-            [ Svg.Attributes.points "24, 135 69, 68 428, 71 472 136"
+
+
+defSurface : Types.Shape.Point -> Svg msg
+defSurface point =
+    let
+        size_ : Types.Shape.Size
+        size_ =
+            { width = Constants.Wall.innerSize.width + 64
+            , height = 60
+            }
+    in
+    Utils.Svg.createSvg
+        point
+        size_
+        []
+        [ Svg.rect
+            [ Svg.Attributes.x "0"
+            , Svg.Attributes.y "30"
+            , Svg.Attributes.width (String.fromInt size_.width)
+            , Svg.Attributes.height "30"
+            ]
+            []
+        , Svg.polygon
+            [ Svg.Attributes.points
+                (Utils.Svg.createPolygonLine
+                    { x = 32, y = 0 }
+                    { x = 0, y = 30 }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 0, y = 30 }
+                        { x = 600, y = 30 }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 578, y = 30 }
+                        { x = 544, y = 0 }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 546, y = 0 }
+                        { x = 32, y = 0 }
+                )
+            ]
+            []
+        ]
+
+
+defLeftLeg : Types.Shape.Point -> Svg msg
+defLeftLeg point =
+    let
+        legWidth =
+            30
+
+        legDepth =
+            30
+
+        size_ : Types.Shape.Size
+        size_ =
+            { width = 60
+            , height = 230
+            }
+    in
+    Utils.Svg.createSvg
+        point
+        size_
+        []
+        [ Svg.polygon
+            [ Svg.Attributes.points
+                (Utils.Svg.createPolygonLine
+                    { x = legWidth, y = 0 }
+                    { x = legWidth, y = size_.height }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = legWidth, y = size_.height }
+                        { x = size_.width, y = size_.height - legDepth }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = size_.width, y = size_.height - legDepth }
+                        { x = size_.width, y = 0 }
+                )
             ]
             []
         , Svg.rect
-            [ Svg.Attributes.x strSideWidth
-            , Svg.Attributes.y strSideHeight
-            , Svg.Attributes.width strInnerWidth
-            , Svg.Attributes.height strInnerHeight
-            , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
+            [ Svg.Attributes.x "0"
+            , Svg.Attributes.y "0"
+            , Svg.Attributes.width (String.fromInt legWidth)
+            , Svg.Attributes.height (String.fromInt size_.height)
             ]
             []
-        , Svg.line
-            [ Svg.Attributes.x1 (String.fromInt Constants.Wall.outerTopLeft.x)
-            , Svg.Attributes.y1 (String.fromInt Constants.Wall.outerTopLeft.y)
-            , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerTopLeft.x)
-            , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerTopLeft.y)
-            , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
+        ]
+
+
+defRightLeg : Types.Shape.Point -> Svg msg
+defRightLeg point =
+    let
+        size_ : Types.Shape.Size
+        size_ =
+            { width = 30
+            , height = 230
+            }
+    in
+    Utils.Svg.createSvg
+        point
+        size_
+        []
+        [ Svg.rect
+            [ Svg.Attributes.x "0"
+            , Svg.Attributes.y "0"
+            , Svg.Attributes.width (String.fromInt size_.width)
+            , Svg.Attributes.height (String.fromInt size_.height)
             ]
             []
-        , Svg.line
-            [ Svg.Attributes.x1 (String.fromInt Constants.Wall.outerTopRight.x)
-            , Svg.Attributes.y1 (String.fromInt Constants.Wall.outerTopRight.y)
-            , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerTopRight.x)
-            , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerTopRight.y)
-            , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
+        ]
+
+
+defCabinet : Types.Shape.Point -> Svg msg
+defCabinet point =
+    let
+        surfaceX =
+            20
+
+        size_ : Types.Shape.Size
+        size_ =
+            { width = 170
+            , height = 170
+            }
+
+        surfaceSize_ : Types.Shape.Size
+        surfaceSize_ =
+            { width = 150
+            , height = 85
+            }
+    in
+    Utils.Svg.createSvg
+        point
+        size_
+        []
+        [ Svg.polygon
+            [ Svg.Attributes.points
+                (Utils.Svg.createPolygonLine
+                    { x = surfaceX, y = 0 }
+                    { x = surfaceX, y = size_.height }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = surfaceX, y = size_.height }
+                        { x = 0, y = size_.height - surfaceX }
+                    ++ Utils.Svg.createPolygonLine
+                        { x = 0, y = size_.height - surfaceX }
+                        { x = 0, y = 0 }
+                )
             ]
             []
-        , Svg.line
-            [ Svg.Attributes.x1 (String.fromInt Constants.Wall.outerBottomLeft.x)
-            , Svg.Attributes.y1 (String.fromInt Constants.Wall.outerBottomLeft.y)
-            , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerBottomLeft.x)
-            , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerBottomLeft.y)
-            , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
-            ]
-            []
-        , Svg.line
-            [ Svg.Attributes.x1 (String.fromInt Constants.Wall.outerBottomRight.x)
-            , Svg.Attributes.y1 (String.fromInt Constants.Wall.outerBottomRight.y)
-            , Svg.Attributes.x2 (String.fromInt Constants.Wall.innerBottomRight.x)
-            , Svg.Attributes.y2 (String.fromInt Constants.Wall.innerBottomRight.y)
-            , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.stroke Constants.Color.mainColor
+        , Svg.rect
+            [ Svg.Attributes.x (String.fromInt surfaceX)
+            , Svg.Attributes.y (String.fromInt surfaceSize_.height)
+            , Svg.Attributes.width (String.fromInt surfaceSize_.width)
+            , Svg.Attributes.height (String.fromInt surfaceSize_.height)
             ]
             []
         ]

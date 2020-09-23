@@ -1,11 +1,11 @@
-module Types.Object exposing (Plain, Status(..), WithKey(..))
+module Types.Object exposing (Openable(..), Plain, Status(..), getOpenableState)
 
 import Types.Item
 
 
 type Status
     = Exist
-    | NotExist
+    | Lost
     | Broken
 
 
@@ -19,6 +19,25 @@ type alias Plain =
     State
 
 
-type WithKey
-    = Locked Plain
-    | Unlocked Plain
+type Openable
+    = Locked WithKeyState
+    | Closed WithKeyState
+    | Opened WithKeyState
+
+
+type alias WithKeyState =
+    { feature : Types.Item.Item
+    }
+
+
+getOpenableState : Openable -> WithKeyState
+getOpenableState state =
+    case state of
+        Locked result ->
+            result
+
+        Closed result ->
+            result
+
+        Opened result ->
+            result

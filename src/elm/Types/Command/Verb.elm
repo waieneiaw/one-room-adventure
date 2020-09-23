@@ -6,11 +6,13 @@ type Verb
     | Open -- 開ける
     | Close -- 閉める
     | Take -- 取る
+    | Input -- 入力する
     | Put -- 置く
     | Throw -- 捨てる
     | Look -- 見る
     | Use -- 使う
     | Read -- 読む
+    | Unlock -- 解錠する
 
 
 fromString : Maybe String -> Verb
@@ -23,29 +25,35 @@ fromString value =
                 |> String.toLower
     in
     case verb of
-        "open" ->
-            Open
-
         "close" ->
             Close
-
-        "take" ->
-            Take
 
         "get" ->
             Take
 
-        "read" ->
-            Read
+        "input" ->
+            Input
+
+        "look" ->
+            Look
+
+        "open" ->
+            Open
 
         "put" ->
             Put
 
+        "read" ->
+            Read
+
+        "take" ->
+            Take
+
         "throw" ->
             Throw
 
-        "look" ->
-            Look
+        "unlock" ->
+            Unlock
 
         "use" ->
             Use

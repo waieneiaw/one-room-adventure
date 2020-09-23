@@ -3,14 +3,16 @@ module Types.Item exposing (Item, ItemType(..), Items, getItem, noneValue)
 
 type ItemType
     = None
-    | Paper
-    | Scissors
-    | PaperOfSafeTips
-    | PaperOfMachineTips
     | BronzeKey
-    | SilverKey
     | GoldKey
     | Key
+    | Paper
+    | PaperOfSafeTips
+    | PaperOfMachineTips
+    | Scissors
+    | Screw
+    | Screwdriver
+    | SilverKey
 
 
 type alias Item =

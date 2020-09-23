@@ -1,4 +1,4 @@
-module Images.Paper exposing (defs, view)
+module Images.Rack exposing (defs, view)
 
 import Constants.Color
 import Svg exposing (Svg)
@@ -10,7 +10,7 @@ import Utils.Svg
 
 id : String
 id =
-    "paper"
+    "rack"
 
 
 view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
@@ -29,6 +29,20 @@ view obj { x, y } =
         Svg.svg [ Svg.Attributes.id id ] []
 
 
+size : Types.Shape.Size
+size =
+    { width = 480
+    , height = 300
+    }
+
+
+surfaceSize : Types.Shape.Size
+surfaceSize =
+    { width = 150
+    , height = 85
+    }
+
+
 defs : Svg msg
 defs =
     Svg.defs []
@@ -38,36 +52,27 @@ defs =
         ]
 
 
-size : Types.Shape.Size
-size =
-    { width = 40
-    , height = 20
-    }
-
-
-depth : Int
-depth =
-    6
-
-
 defImpl : Svg msg
 defImpl =
     Utils.Svg.createSvg
         { x = 0, y = 0 }
         size
         []
-        [ Svg.polygon
-            [ Svg.Attributes.points
-                (Utils.Svg.createPolygonLine
-                    { x = depth, y = 0 }
-                    { x = 0, y = size.height }
-                    ++ Utils.Svg.createPolygonLine
-                        { x = 0, y = size.height }
-                        { x = size.width, y = size.height }
-                    ++ Utils.Svg.createPolygonLine
-                        { x = size.width, y = size.height }
-                        { x = size.width - depth, y = 0 }
-                )
+        [ defSurface { x = 0, y = 0 }
+        ]
+
+
+defSurface : Types.Shape.Point -> Svg msg
+defSurface point =
+    Utils.Svg.createSvg
+        point
+        surfaceSize
+        []
+        [ Svg.rect
+            [ Svg.Attributes.x "0"
+            , Svg.Attributes.y "0"
+            , Svg.Attributes.width (String.fromInt surfaceSize.width)
+            , Svg.Attributes.height (String.fromInt surfaceSize.height)
             ]
             []
         ]

@@ -1,4 +1,4 @@
-module Images.Paper exposing (defs, view)
+module Images.Board exposing (defs, view)
 
 import Constants.Color
 import Svg exposing (Svg)
@@ -10,7 +10,7 @@ import Utils.Svg
 
 id : String
 id =
-    "paper"
+    "board"
 
 
 view : Types.Object.Plain -> Types.Shape.Point -> Svg msg
@@ -40,14 +40,9 @@ defs =
 
 size : Types.Shape.Size
 size =
-    { width = 40
-    , height = 20
+    { width = 120
+    , height = 120
     }
-
-
-depth : Int
-depth =
-    6
 
 
 defImpl : Svg msg
@@ -56,18 +51,31 @@ defImpl =
         { x = 0, y = 0 }
         size
         []
-        [ Svg.polygon
-            [ Svg.Attributes.points
-                (Utils.Svg.createPolygonLine
-                    { x = depth, y = 0 }
-                    { x = 0, y = size.height }
-                    ++ Utils.Svg.createPolygonLine
-                        { x = 0, y = size.height }
-                        { x = size.width, y = size.height }
-                    ++ Utils.Svg.createPolygonLine
-                        { x = size.width, y = size.height }
-                        { x = size.width - depth, y = 0 }
-                )
+        [ Svg.rect
+            [ Svg.Attributes.x "0"
+            , Svg.Attributes.y "0"
+            , Svg.Attributes.width (String.fromInt size.width)
+            , Svg.Attributes.height (String.fromInt size.height)
+            ]
+            []
+        , defScrew { x = 5, y = 5 }
+        , defScrew { x = 105, y = 5 }
+        , defScrew { x = 5, y = 105 }
+        , defScrew { x = 105, y = 105 }
+        ]
+
+
+defScrew : Types.Shape.Point -> Svg msg
+defScrew point =
+    Svg.svg
+        [ Svg.Attributes.version "1.1"
+        , Svg.Attributes.x (String.fromInt point.x)
+        , Svg.Attributes.y (String.fromInt point.y)
+        ]
+        [ Svg.circle
+            [ Svg.Attributes.cx "6"
+            , Svg.Attributes.cy "6"
+            , Svg.Attributes.r "3"
             ]
             []
         ]
