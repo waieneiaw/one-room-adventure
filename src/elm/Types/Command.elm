@@ -74,18 +74,18 @@ resultNg =
     { message = "NG!", item = Nothing }
 
 
-{-| コマンド実行の結果、messageを返す場合。
--}
-resultWithMessage : String -> Result
-resultWithMessage text =
-    { message = text, item = Nothing }
-
-
 {-| コマンド実行の結果、OKと返す場合。
 -}
 resultOk : Result
 resultOk =
     { message = "OK!", item = Nothing }
+
+
+{-| コマンド実行の結果、messageを返す場合。
+-}
+resultWithMessage : String -> Result
+resultWithMessage text =
+    { message = text, item = Nothing }
 
 
 {-| コマンド実行の結果、messageとitemを返す場合。

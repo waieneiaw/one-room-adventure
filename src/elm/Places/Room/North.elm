@@ -226,6 +226,9 @@ update { items, model, command } =
         ------------
         Types.Command.Noun.PaperOfMachineTips ->
             let
+                target =
+                    model.paper2
+
                 place =
                     model.hole
             in
@@ -233,7 +236,7 @@ update { items, model, command } =
                 Types.Command.Verb.Look ->
                     case place of
                         Types.Object.Opened _ ->
-                            if model.paper2.status == Types.Object.Exist then
+                            if target.status == Types.Object.Exist then
                                 message
                                     "何か書かれています。"
 
@@ -246,7 +249,7 @@ update { items, model, command } =
                 Types.Command.Verb.Read ->
                     case place of
                         Types.Object.Opened _ ->
-                            if model.paper2.status == Types.Object.Exist then
+                            if target.status == Types.Object.Exist then
                                 message
                                     ("何かの暗号のようなものが書かれていますが、"
                                         ++ "取らないと読めません。"
@@ -261,14 +264,14 @@ update { items, model, command } =
                 Types.Command.Verb.Take ->
                     case place of
                         Types.Object.Opened _ ->
-                            if model.paper2.status == Types.Object.Exist then
+                            if target.status == Types.Object.Exist then
                                 ( { model
                                     | paper2 =
                                         { status = Types.Object.Lost
-                                        , feature = model.paper2.feature
+                                        , feature = target.feature
                                         }
                                   }
-                                , Types.Command.resultWithItem model.paper2
+                                , Types.Command.resultWithItem target
                                 )
 
                             else
@@ -287,12 +290,15 @@ update { items, model, command } =
             case command.verb of
                 Types.Command.Verb.Use ->
                     let
-                        goldKey =
+                        target =
+                            model.door
+
+                        item =
                             Types.Item.getItem items Types.Item.GoldKey
                     in
-                    case model.door of
+                    case target of
                         Types.Object.Locked state ->
-                            case goldKey of
+                            case item of
                                 Just _ ->
                                     ( { model
                                         | door = Types.Object.Opened state
@@ -313,12 +319,15 @@ update { items, model, command } =
             case command.verb of
                 Types.Command.Verb.Use ->
                     let
-                        screwdriver =
+                        target =
+                            model.hole
+
+                        item =
                             Types.Item.getItem items Types.Item.Screwdriver
                     in
-                    case model.hole of
+                    case target of
                         Types.Object.Locked state ->
-                            case screwdriver of
+                            case item of
                                 Just _ ->
                                     ( { model
                                         | hole = Types.Object.Opened state

@@ -99,14 +99,21 @@ update { model, command } =
         -- Box
         ------------
         Types.Command.Noun.Box ->
+            let
+                target =
+                    model.box
+
+                item =
+                    model.silverKey
+            in
             case command.verb of
                 Types.Command.Verb.Look ->
-                    case model.box of
+                    case target of
                         Types.Object.Opened _ ->
-                            if model.silverKey.status == Types.Object.Exist then
+                            if item.status == Types.Object.Exist then
                                 message
                                     ("銅色の箱です。中に。"
-                                        ++ model.silverKey.feature.name
+                                        ++ item.feature.name
                                         ++ "があります。"
                                     )
 
@@ -119,7 +126,7 @@ update { model, command } =
                                 "銅色の箱です。鍵穴がついています。"
 
                 Types.Command.Verb.Open ->
-                    case model.box of
+                    case target of
                         Types.Object.Closed state ->
                             ( { model
                                 | box =
@@ -132,7 +139,7 @@ update { model, command } =
                             noop
 
                 Types.Command.Verb.Close ->
-                    case model.box of
+                    case target of
                         Types.Object.Opened state ->
                             ( { model
                                 | box =
@@ -151,14 +158,21 @@ update { model, command } =
         -- Safe
         ------------
         Types.Command.Noun.Safe ->
+            let
+                target =
+                    model.safe
+
+                item =
+                    model.screwdriver
+            in
             case command.verb of
                 Types.Command.Verb.Look ->
-                    case model.safe of
+                    case target of
                         Types.Object.Opened _ ->
-                            if model.screwdriver.status == Types.Object.Exist then
+                            if item.status == Types.Object.Exist then
                                 message
                                     ("中には"
-                                        ++ model.screwdriver.feature.name
+                                        ++ item.feature.name
                                         ++ "が置かれています。"
                                     )
 
@@ -174,7 +188,7 @@ update { model, command } =
                                 )
 
                 Types.Command.Verb.Open ->
-                    case model.safe of
+                    case target of
                         Types.Object.Closed state ->
                             ( { model
                                 | safe =
@@ -187,7 +201,7 @@ update { model, command } =
                             noop
 
                 Types.Command.Verb.Close ->
-                    case model.safe of
+                    case target of
                         Types.Object.Closed state ->
                             ( { model
                                 | safe =
@@ -203,9 +217,13 @@ update { model, command } =
                     noop
 
         Types.Command.Noun.SafeUnlockNumber ->
+            let
+                target =
+                    model.safe
+            in
             case command.verb of
                 Types.Command.Verb.Unlock ->
-                    case model.safe of
+                    case target of
                         Types.Object.Locked state ->
                             ( { model
                                 | safe =
@@ -224,11 +242,18 @@ update { model, command } =
         -- Screwdriver
         ------------
         Types.Command.Noun.Screwdriver ->
+            let
+                target =
+                    model.screwdriver
+
+                place =
+                    model.safe
+            in
             case command.verb of
                 Types.Command.Verb.Look ->
-                    case model.safe of
+                    case place of
                         Types.Object.Opened _ ->
-                            if model.screwdriver.status == Types.Object.Exist then
+                            if target.status == Types.Object.Exist then
                                 message "大きめのプラスドライバーです。"
 
                             else
@@ -238,16 +263,16 @@ update { model, command } =
                             noop
 
                 Types.Command.Verb.Take ->
-                    case model.safe of
+                    case place of
                         Types.Object.Opened _ ->
-                            if model.screwdriver.status == Types.Object.Exist then
+                            if target.status == Types.Object.Exist then
                                 ( { model
                                     | screwdriver =
                                         { status = Types.Object.Lost
-                                        , feature = model.screwdriver.feature
+                                        , feature = target.feature
                                         }
                                   }
-                                , Types.Command.resultWithItem model.screwdriver
+                                , Types.Command.resultWithItem target
                                 )
 
                             else
@@ -263,9 +288,13 @@ update { model, command } =
         -- SilverKey
         ------------
         Types.Command.Noun.SilverKey ->
+            let
+                target =
+                    model.silverKey
+            in
             case command.verb of
                 Types.Command.Verb.Look ->
-                    if model.silverKey.status == Types.Object.Exist then
+                    if target.status == Types.Object.Exist then
                         message
                             "銀色の鍵です。箱の奥に貼り付けられています。"
 
@@ -273,14 +302,14 @@ update { model, command } =
                         noop
 
                 Types.Command.Verb.Take ->
-                    if model.silverKey.status == Types.Object.Exist then
+                    if target.status == Types.Object.Exist then
                         ( { model
                             | silverKey =
                                 { status = Types.Object.Lost
-                                , feature = model.silverKey.feature
+                                , feature = target.feature
                                 }
                           }
-                        , Types.Command.resultWithItem model.silverKey
+                        , Types.Command.resultWithItem target
                         )
 
                     else
@@ -293,9 +322,13 @@ update { model, command } =
         -- ITEM
         ------------
         Types.Command.Noun.BronzeKey ->
+            let
+                target =
+                    model.box
+            in
             case command.verb of
                 Types.Command.Verb.Use ->
-                    case model.box of
+                    case target of
                         Types.Object.Locked state ->
                             ( { model
                                 | box =
