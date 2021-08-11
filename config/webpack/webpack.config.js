@@ -182,6 +182,7 @@ module.exports = {
             loader: 'sass-loader',
             options: {
               sourceMap: isDevelopment,
+              implementation: require("sass"),
             }
           }
         ],
